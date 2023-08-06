@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class RoundedButton extends StatelessWidget {
-  RoundedButton(
-      {required this.backgroundColor,
+class _RoundedButton extends StatelessWidget {
+  _RoundedButton(
+      {super.key,
+      required this.backgroundColor,
       required this.title,
       required this.onPressed,
       required this.textColor,
@@ -37,13 +38,13 @@ class RoundedButton extends StatelessWidget {
 }
 
 class SignUpButton extends StatelessWidget {
-  SignUpButton({required this.onPressed});
+  SignUpButton({super.key, required this.onPressed});
   final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return RoundedButton(
-      backgroundColor: Colors.white,
+    return _RoundedButton(
+      backgroundColor: Colors.grey[100],
       title: "Sign up",
       onPressed: onPressed,
       textColor: Colors.indigo[800],
@@ -53,12 +54,12 @@ class SignUpButton extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  LoginButton({required this.onPressed});
+  LoginButton({super.key, required this.onPressed});
   final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return RoundedButton(
+    return _RoundedButton(
       backgroundColor: Colors.indigo[800],
       title: "Login",
       onPressed: onPressed,

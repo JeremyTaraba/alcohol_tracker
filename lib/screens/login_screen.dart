@@ -1,5 +1,9 @@
+import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
+
 import 'package:flutter/material.dart';
+
+import '../util/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,14 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    hintText: "Email",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
+                  decoration:
+                      kTextFieldDecoration().copyWith(hintText: "Email"),
                 ),
               ),
               Padding(
@@ -47,14 +45,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     password = value;
                   },
                   autocorrect: false,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      hintText: "Password",
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      )),
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      kTextFieldDecoration().copyWith(hintText: "Password"),
                 ),
               ),
               LoginButton(onPressed: () {}),
@@ -62,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(15.0),
                 child: GestureDetector(
                   onTap: () {},
-                  child: Text(
+                  child: const Text(
                     "Forgot password?",
                     style: TextStyle(color: Colors.blue, fontSize: 20),
                   ),
@@ -76,13 +69,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Don't have an account? ",
                           style: TextStyle(fontSize: 20),
                         ),
                         GestureDetector(
-                          onTap: () {},
-                          child: Text(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()));
+                          },
+                          child: const Text(
                             "Sign up",
                             style: TextStyle(
                               color: Colors.blue,
