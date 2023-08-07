@@ -1,4 +1,5 @@
-import 'package:alcohol_tracker/home_screen.dart';
+import 'package:alcohol_tracker/screens/home_screen.dart';
+import 'package:alcohol_tracker/screens/login_register_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,8 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => homeScreen()));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => LoginRegisterScreen()));
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:alcohol_tracker/home_screen.dart';
+import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/launch_screen.dart';
 import 'package:alcohol_tracker/screens/login_register_screen.dart';
 import 'package:alcohol_tracker/screens/login_screen.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: LoginRegisterScreen(),
+      home: HomeScreen(),
     );
   }
 }

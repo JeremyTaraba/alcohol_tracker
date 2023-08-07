@@ -1,4 +1,4 @@
-import 'package:alcohol_tracker/home_screen.dart';
+import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/liquid_loader.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ class _launchScreenState extends State<launchScreen>
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 3000), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => homeScreen()));
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   @override
