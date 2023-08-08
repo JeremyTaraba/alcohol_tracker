@@ -13,5 +13,5 @@ InputDecoration kTextFieldDecoration() {
 }
 
 TextStyle kTextFieldFont() {
-  return TextStyle(fontSize: 22);
+  return const TextStyle(fontSize: 22);
 }
