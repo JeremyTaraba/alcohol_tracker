@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: (value) {
                     email = value;
                   },
+                  style: kTextFieldFont(),
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   decoration:
@@ -44,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: (value) {
                     password = value;
                   },
+                  style: kTextFieldFont(),
                   autocorrect: false,
                   keyboardType: TextInputType.text,
                   decoration:
