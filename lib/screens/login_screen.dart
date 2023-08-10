@@ -1,9 +1,12 @@
+import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
 
 import 'package:flutter/material.dart';
 
 import '../util/constants.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,12 +51,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: kTextFieldFont(),
                   autocorrect: false,
+                  obscureText: true,
                   keyboardType: TextInputType.text,
                   decoration:
                       kTextFieldDecoration().copyWith(hintText: "Password"),
                 ),
               ),
-              LoginButton(onPressed: () {}),
+              LoginButton(onPressed: () async {
+                try {
+                  final user = await _auth.signInWithEmailAndPassword(
+                      email: email, password: password);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                } catch (e) {
+                  print(e);
+                }
+              }),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: GestureDetector(
