@@ -3,6 +3,7 @@ import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../util/constants.dart';
 
@@ -19,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
   final _auth = FirebaseAuth.instance;
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,6 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.white,
           body: Column(
             children: [
+              showSpinner
+                  ? SpinKitWaveSpinner(color: Colors.blue)
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 12.0, right: 12.0, bottom: 25, top: 50),
@@ -58,6 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               LoginButton(onPressed: () async {
+                setState(() {
+                  showSpinner = true;
+                });
+
                 try {
                   final user = await _auth.signInWithEmailAndPassword(
                       email: email, password: password);
@@ -66,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 } catch (e) {
                   print(e);
                 }
+                setState(() {
+                  showSpinner = false;
+                });
               }),
               Padding(
                 padding: const EdgeInsets.all(15.0),
