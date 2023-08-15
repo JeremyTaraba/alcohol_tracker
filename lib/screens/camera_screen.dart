@@ -1,7 +1,5 @@
-import 'package:alcohol_tracker/screens/take_picture_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 late List<CameraDescription> cameras;
 
@@ -23,22 +21,24 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
 
   @override
+  void dispose() {
+    //closes the camera when leaving the screen
+    // Dispose of the controller when the widget is disposed.
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _task,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           // If the Future is complete, display the preview.
-
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            // add your code here.
-
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TakePictureScreen(controller: _controller)));
-          });
+          return Container(
+            height: double.infinity,
+            child: CameraPreview(_controller),
+          );
         }
         return const Center(child: CircularProgressIndicator());
       },
