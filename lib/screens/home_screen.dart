@@ -1,3 +1,4 @@
+import 'package:alcohol_tracker/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Column(
           children: [
-            Text("Date and time picker"),
+            Text(
+                "Date and time picker but only for dates we have in the database"),
             Text("Graph for alcohol consumption"),
             Text("Alcohol consumption Assessment text box"),
           ],
@@ -70,5 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       selectedIndex = index;
     });
+    if (index == 4) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CameraScreen()));
+    }
   }
 }
