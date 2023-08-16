@@ -1,3 +1,4 @@
+import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -30,18 +31,52 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _task,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          // If the Future is complete, display the preview.
-          return Container(
-            height: double.infinity,
-            child: CameraPreview(_controller),
-          );
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
+    return Scaffold(
+      body: FutureBuilder(
+        future: _task,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // If the Future is complete, display the preview.
+            return Stack(
+              children: [
+                Container(
+                  height: double.infinity,
+                  child: CameraPreview(_controller),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: IconButton(
+                    onPressed: () async {
+                      if (!_controller.value.isInitialized) {
+                        return null;
+                      }
+                      if (_controller.value.isTakingPicture) {
+                        return null;
+                      }
+                      try {
+                        await _controller.setFlashMode(FlashMode.auto);
+                        XFile picture = await _controller.takePicture();
+                      } on CameraException catch (e) {
+                        debugPrint("Error occured while taking picture: $e");
+                        return null;
+                      }
+                    },
+                    icon: Icon(
+                      Icons.circle_outlined,
+                      size: 80,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+      bottomNavigationBar: bottomNav(
+        selectedIndex: 4,
+      ),
     );
   }
 

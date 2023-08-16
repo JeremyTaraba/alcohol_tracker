@@ -1,4 +1,5 @@
 import 'package:alcohol_tracker/screens/camera_screen.dart';
+import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,45 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.indigo[800],
-        selectedItemColor: Colors.white,
-        currentIndex: selectedIndex,
-        onTap: onItemTap,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb),
-            label: 'Tips',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_camera),
-            label: 'Camera',
-          ),
-        ],
-      ),
+      bottomNavigationBar: bottomNav(selectedIndex: selectedIndex),
     );
-  }
-
-  void onItemTap(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-    if (index == 4) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CameraScreen()));
-    }
   }
 }
