@@ -1,13 +1,10 @@
-import 'package:alcohol_tracker/screens/home_screen.dart';
-import 'package:alcohol_tracker/launch_screen.dart';
 import 'package:alcohol_tracker/screens/login_register_screen.dart';
-import 'package:alcohol_tracker/screens/login_screen.dart';
-import 'package:alcohol_tracker/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

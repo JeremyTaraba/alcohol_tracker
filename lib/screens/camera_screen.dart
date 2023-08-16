@@ -1,3 +1,4 @@
+import 'package:alcohol_tracker/screens/image_preview_screen.dart';
 import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   late Future<bool> _task;
   late CameraController _controller;
+  bool takingPicture = false;
 
   @override
   void dispose() {
@@ -45,27 +47,50 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: IconButton(
-                    onPressed: () async {
-                      if (!_controller.value.isInitialized) {
-                        return null;
-                      }
-                      if (_controller.value.isTakingPicture) {
-                        return null;
-                      }
-                      try {
-                        await _controller.setFlashMode(FlashMode.auto);
-                        XFile picture = await _controller.takePicture();
-                      } on CameraException catch (e) {
-                        debugPrint("Error occured while taking picture: $e");
-                        return null;
-                      }
-                    },
-                    icon: Icon(
-                      Icons.circle_outlined,
-                      size: 80,
-                      color: Colors.white,
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: takingPicture
+                        ? const CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            strokeWidth: 8,
+                          )
+                        : IconButton(
+                            onPressed: () async {
+                              if (!_controller.value.isInitialized) {
+                                return;
+                              }
+                              if (_controller.value.isTakingPicture) {
+                                setState(() {
+                                  takingPicture = true;
+                                });
+                                return;
+                              } else {
+                                setState(() {
+                                  takingPicture = false;
+                                });
+                              }
+
+                              try {
+                                await _controller.setFlashMode(FlashMode.off);
+                                XFile picture = await _controller.takePicture();
+
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ImagePreviewScreen(file: picture)));
+                              } on CameraException catch (e) {
+                                debugPrint(
+                                    "Error occured while taking picture: $e");
+                                return;
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.circle_outlined,
+                              size: 100,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 )
               ],
