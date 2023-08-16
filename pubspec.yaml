@@ -39,6 +39,7 @@ dependencies:
   camera: ^0.10.5+3
   path: ^1.8.3
   path_provider: ^2.1.0
+  camerawesome: ^1.4.0
 
 
 

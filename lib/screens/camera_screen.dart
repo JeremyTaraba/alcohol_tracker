@@ -54,41 +54,56 @@ class _CameraScreenState extends State<CameraScreen> {
                             backgroundColor: Colors.white,
                             strokeWidth: 8,
                           )
-                        : IconButton(
-                            onPressed: () async {
-                              if (!_controller.value.isInitialized) {
-                                return;
-                              }
-                              if (_controller.value.isTakingPicture) {
-                                setState(() {
-                                  takingPicture = true;
-                                });
-                                return;
-                              } else {
-                                setState(() {
-                                  takingPicture = false;
-                                });
-                              }
-
-                              try {
-                                await _controller.setFlashMode(FlashMode.off);
-                                XFile picture = await _controller.takePicture();
-
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ImagePreviewScreen(file: picture)));
-                              } on CameraException catch (e) {
-                                debugPrint(
-                                    "Error occured while taking picture: $e");
-                                return;
-                              }
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                takingPicture = true;
+                              });
                             },
-                            icon: const Icon(
-                              Icons.circle_outlined,
-                              size: 100,
-                              color: Colors.white,
+                            child: IconButton(
+                              onPressed: () async {
+                                if (!_controller.value.isInitialized) {
+                                  return;
+                                }
+                                if (_controller.value.isTakingPicture) {
+                                  return;
+                                } else {
+                                  setState(() {
+                                    takingPicture = false;
+                                  });
+                                }
+
+                                try {
+                                  await _controller.setFlashMode(FlashMode.off);
+
+                                  //Makes it much faster
+                                  await _controller
+                                      .setFocusMode(FocusMode.locked);
+
+                                  XFile picture =
+                                      await _controller.takePicture();
+
+                                  //Makes it much faster
+                                  await _controller
+                                      .setFocusMode(FocusMode.locked);
+
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ImagePreviewScreen(
+                                                  file: picture)));
+                                } on CameraException catch (e) {
+                                  debugPrint(
+                                      "Error occured while taking picture: $e");
+                                  return;
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.circle_outlined,
+                                size: 100,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                   ),
@@ -109,7 +124,8 @@ class _CameraScreenState extends State<CameraScreen> {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
 
-    _controller = CameraController(cameras[0], ResolutionPreset.max);
+    _controller = CameraController(cameras[0], ResolutionPreset.high);
+
     _controller.initialize().then((_) {
       if (!mounted) {
         return true;
