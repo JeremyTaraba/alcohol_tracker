@@ -23,6 +23,15 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
   bool takingPicture = false;
 
+  @override //is supposed to dispose the camera when closing app without leaving camera screen
+  Future<void> didChangeAppLifeCycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive) {
+      dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      _task = cameraSetup();
+    }
+  }
+
   @override
   void dispose() {
     //closes the camera when leaving the screen
@@ -115,7 +124,7 @@ class _CameraScreenState extends State<CameraScreen> {
         },
       ),
       bottomNavigationBar: bottomNav(
-        selectedIndex: 4,
+        selectedIndex: 3,
       ),
     );
   }
@@ -124,7 +133,8 @@ class _CameraScreenState extends State<CameraScreen> {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
 
-    _controller = CameraController(cameras[0], ResolutionPreset.high);
+    _controller =
+        CameraController(cameras[0], ResolutionPreset.high, enableAudio: false);
 
     _controller.initialize().then((_) {
       if (!mounted) {

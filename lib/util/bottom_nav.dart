@@ -16,11 +16,11 @@ class _bottomNavState extends State<bottomNav> {
     setState(() {
       widget.selectedIndex = index;
     });
-    if (index == 0) {
+    if (index == 1) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
-    if (index == 4) {
+    if (index == 3) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => CameraScreen()));
     }
@@ -30,8 +30,8 @@ class _bottomNavState extends State<bottomNav> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.indigo[800],
-      selectedItemColor: Colors.white,
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.lightBlueAccent,
       currentIndex: widget.selectedIndex,
       onTap: onItemTap,
       items: const [
@@ -40,19 +40,15 @@ class _bottomNavState extends State<bottomNav> {
           label: 'Profile',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: 'History',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.lightbulb),
-          label: 'Tips',
+          icon: Icon(Icons.list),
+          label: 'History',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.photo_camera),
+          icon: Icon(Icons.camera_alt_outlined),
           label: 'Camera',
         ),
       ],

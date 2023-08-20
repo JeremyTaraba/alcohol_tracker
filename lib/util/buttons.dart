@@ -20,6 +20,7 @@ class _RoundedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+        elevation: 8,
         backgroundColor: backgroundColor,
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
