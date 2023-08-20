@@ -6,6 +6,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../util/buttons.dart';
 import '../util/constants.dart';
+import '../util/objects.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -171,7 +172,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         builder: (context) => HomeScreen()));
                               }
                             } catch (e) {
-                              print(e); //prints out error message
+                              mySnackBar(e.toString().split(']')[1],
+                                  context); //prints out error message
                             }
                             setState(() {
                               showSpinner = false;

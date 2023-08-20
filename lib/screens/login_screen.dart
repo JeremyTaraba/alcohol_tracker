@@ -1,6 +1,7 @@
 import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
+import 'package:alcohol_tracker/util/objects.dart';
 
 import 'package:flutter/material.dart';
 
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()));
                         } catch (e) {
-                          print(e);
+                          mySnackBar(e.toString().split(']')[1], context);
                         }
                         setState(() {
                           showSpinner = false;

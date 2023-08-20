@@ -1,4 +1,6 @@
+import 'package:alcohol_tracker/screens/history_screen.dart';
 import 'package:alcohol_tracker/screens/home_screen.dart';
+import 'package:alcohol_tracker/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/camera_screen.dart';
@@ -16,9 +18,17 @@ class _bottomNavState extends State<bottomNav> {
     setState(() {
       widget.selectedIndex = index;
     });
+    if (index == 0) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+    }
     if (index == 1) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
+    if (index == 2) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HistoryScreen()));
     }
     if (index == 3) {
       Navigator.pushReplacement(
