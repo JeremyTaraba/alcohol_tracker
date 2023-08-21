@@ -38,7 +38,7 @@ class LoginRegisterScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Welcome to Alcohol Trackr",
+                      "Welcome to Drink Trackr",
                       style: TextStyle(
                         fontSize: 28,
                         color: Colors.white,
