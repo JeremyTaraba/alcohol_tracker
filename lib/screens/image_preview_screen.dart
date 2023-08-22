@@ -60,7 +60,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                 ),
                 const Align(
                   alignment: Alignment.topCenter,
-                  child: Text("Image Preview"),
+                  child: Center(child: Text("Image Preview")),
                 )
               ],
             ),

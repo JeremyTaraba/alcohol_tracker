@@ -3,7 +3,7 @@ import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-late List<CameraDescription> cameras;
+import 'image_preview_screen_test.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -19,16 +19,23 @@ class _CameraScreenState extends State<CameraScreen> {
     _task = cameraSetup();
   }
 
-  late Future<bool> _task;
+  late List<CameraDescription> cameras;
   late CameraController _controller;
+  late Future<bool> _task;
   bool takingPicture = false;
 
-  @override //is supposed to dispose the camera when closing app without leaving camera screen
-  Future<void> didChangeAppLifeCycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.inactive) {
-      dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      _task = cameraSetup();
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.paused:
+        _controller.stopImageStream();
+        break;
+      case AppLifecycleState.resumed:
+        if (!_controller.value.isStreamingImages) {
+          _task = cameraSetup();
+        }
+        break;
+      default:
     }
   }
 
@@ -37,6 +44,7 @@ class _CameraScreenState extends State<CameraScreen> {
     //closes the camera when leaving the screen
     // Dispose of the controller when the widget is disposed.
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -100,7 +108,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ImagePreviewScreen(
+                                              ImagePreviewScreenTest(
                                                   file: picture)));
                                 } on CameraException catch (e) {
                                   debugPrint(
@@ -130,7 +138,6 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<bool> cameraSetup() async {
-    WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
 
     _controller =
@@ -141,19 +148,21 @@ class _CameraScreenState extends State<CameraScreen> {
         return true;
       }
       setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case "CameraAccessDenied":
-            print("Access was denied");
-            break;
-          default:
-            print(e.description);
-            break;
+    }).catchError(
+      (Object e) {
+        if (e is CameraException) {
+          switch (e.code) {
+            case "CameraAccessDenied":
+              print("Access was denied");
+              break;
+            default:
+              print(e.description);
+              break;
+          }
         }
-      }
-      return false;
-    });
+        return false;
+      },
+    );
     return false;
   }
 }
