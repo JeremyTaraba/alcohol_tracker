@@ -16,9 +16,7 @@ class bottomNav extends StatefulWidget {
 
 class _bottomNavState extends State<bottomNav> {
   void onItemTap(int index) {
-    setState(() {
-      widget.selectedIndex = index;
-    });
+    
     if (index == 0) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => ProfileScreen()));
