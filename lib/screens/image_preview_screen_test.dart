@@ -62,56 +62,57 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
       child: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text("Image Preview"),
+          ),
           body: Stack(
             children: [
-              Row(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.arrow_back),
-                    ),
-                  ),
-                  const Align(
-                    alignment: Alignment.topCenter,
-                    child: Center(child: Text("Image Preview")),
-                  ),
-                ],
-              ),
               Center(
                 child: Image.file(picture),
               ),
               Align(
-                alignment: Alignment.bottomRight,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      await processImage(picture);
-                      //print(classification);
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AnalyzeResultsScreen(
-                                  classification: classification)));
-                    } catch (e) {
-                      print(e);
-                    }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo[800],
-                  ),
-                  child: const Text(
-                    "Analyze",
-                    style: TextStyle(color: Colors.white),
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  color: Colors.white,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          setState(() {
+                            showSpinner = true;
+                          });
+                          try {
+                            await processImage(picture);
+                            //print(classification);
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AnalyzeResultsScreen(
+                                        classification: classification)));
+                          } catch (e) {
+                            print(e);
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo[800],
+                        ),
+                        child: const Text(
+                          "Analyze",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

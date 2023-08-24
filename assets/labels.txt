@@ -1,0 +1,5 @@
+Beer
+Red Wine
+White Wine
+Rose Wine
+Cocktail
