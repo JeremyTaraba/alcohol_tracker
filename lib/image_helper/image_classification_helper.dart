@@ -26,8 +26,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'isolate_inference.dart';
 
 class ImageClassificationHelper {
-  static const modelPath = 'assets/model_alcohol_quantized.tflite';
-  static const labelsPath = 'assets/labels_quantized.txt';
+  static const modelPath = 'assets/model_with_cocktails.tflite';
+  static const labelsPath = 'assets/labels_with_cocktails.txt';
 
   late final Interpreter interpreter;
   late final List<String> labels;

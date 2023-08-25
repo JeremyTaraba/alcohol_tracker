@@ -11,18 +11,19 @@ class AnalyzeResultsScreen extends StatefulWidget {
 
 class _AnalyzeResultsScreenState extends State<AnalyzeResultsScreen> {
   List<String> sortClassification() {
-    var sortedResults = widget.classification.entries.toList()
+    sortedResults = widget.classification.entries.toList()
       ..sort((a, b) => a.value.compareTo(b.value));
     List<String> topResults = [];
-    for (int i = sortedResults.length - 1; i > 0; i--) {
+    for (int i = sortedResults.length - 1; i >= 0; i--) {
       topResults.add(sortedResults[i].key);
       //print(sortedResults[i].value);
     }
-
+    print(widget.classification.entries);
     return topResults;
   }
 
   late List<String> topResults;
+  late List<MapEntry<String, double>> sortedResults;
 
   @override
   void initState() {
@@ -35,8 +36,23 @@ class _AnalyzeResultsScreenState extends State<AnalyzeResultsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          child: Text("$topResults"),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 28.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  "${topResults[0]}",
+                  style: TextStyle(fontSize: 28),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            Text("$sortedResults"),
+          ],
         ),
       ),
     );
