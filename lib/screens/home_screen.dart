@@ -1,7 +1,7 @@
-import 'package:alcohol_tracker/screens/camera_screen.dart';
 import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,65 +13,164 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 1;
 
+  DateTime now = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent,
-        elevation: 0,
-        title: Text("Drink Trackr", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8, top: 10),
-              child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border:
-                        Border.all(color: Colors.lightBlueAccent, width: 3)),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        "Date and time picker but only for dates we have in the database",
-                        overflow: TextOverflow.fade,
+    String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
+    int currentHour = int.parse(formattedDate.split(':')[0]);
+
+    String welcomeMessage() {
+      if (currentHour <= 12) {
+        return "Good Morning";
+      } else if (currentHour > 12 && currentHour <= 18) {
+        return "Good Afternoon";
+      } else {
+        return "Good Evening";
+      }
+    }
+
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Column(
+            children: [
+              Text(
+                welcomeMessage(),
+                style: TextStyle(fontSize: 24),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 20.0,
+                  left: 15,
+                  right: 15,
+                ),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "August 20 - 27",
+                        style: TextStyle(fontSize: 28),
                       ),
-                    ),
-                    Icon(Icons.arrow_drop_down),
-                  ],
+                      Icon(
+                        Icons.arrow_drop_down,
+                        size: 50,
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                          Border.all(color: Colors.lightBlueAccent, width: 3)),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                height: 350,
-                width: 350,
-                color: Colors.lightBlueAccent,
-                child: Text("Graph for alcohol consumption"),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 30.0,
+                  left: 15,
+                  right: 15,
+                ),
+                child: Container(
+                  height: 300,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Ounces:",
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, left: 5, right: 5),
+                          child: SfSparkBarChart(
+                            labelDisplayMode: SparkChartLabelDisplayMode.all,
+                            axisLineColor: Colors.transparent,
+                            data: <double>[
+                              10,
+                              6,
+                              8,
+                              5,
+                              11,
+                              5,
+                              2,
+                            ],
+                            color: Colors.lightBlueAccent,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Sun"),
+                              Text("Mon"),
+                              Text("Tue"),
+                              Text("Wed"),
+                              Text("Thur"),
+                              Text("Fri"),
+                              Text("Sat"),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                height: 150,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border:
-                        Border.all(color: Colors.lightBlueAccent, width: 3)),
-                child: Text("Alcohol consumption assessment text box"),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Container(
+                  height: 200,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Weekly Total",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Beer: 40oz",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Text(
+                          "Red Wine: 10oz",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Text(
+                          "White Wine: 8oz",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          bottomNavigationBar: bottomNav(selectedIndex: selectedIndex),
         ),
       ),
-      bottomNavigationBar: bottomNav(selectedIndex: selectedIndex),
     );
   }
 }
