@@ -51,7 +51,6 @@ class _AnalyzeResultsScreenState extends State<AnalyzeResultsScreen> {
             SizedBox(
               height: 100,
             ),
-            Text("$sortedResults"),
           ],
         ),
       ),

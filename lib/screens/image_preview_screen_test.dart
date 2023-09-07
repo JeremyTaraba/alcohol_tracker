@@ -35,6 +35,23 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
 
   late ImageClassificationHelper imageClassificationHelper;
 
+  late Future<bool> _task;
+
+  late List<String> topResults;
+  late List<MapEntry<String, double>> sortedResults;
+
+  List<String> sortClassification() {
+    sortedResults = classification.entries.toList()
+      ..sort((a, b) => a.value.compareTo(b.value));
+    List<String> topResults = [];
+    for (int i = sortedResults.length - 1; i >= 0; i--) {
+      topResults.add(sortedResults[i].key);
+      //print(sortedResults[i].value);
+    }
+
+    return topResults;
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -53,6 +70,7 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
   }
 
   bool showSpinner = false;
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -66,57 +84,100 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
             centerTitle: true,
             title: Text("Image Preview"),
           ),
-          body: Stack(
-            children: [
-              Center(
-                child: Image.file(picture),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: Colors.white,
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            await processImage(picture);
-                            //print(classification);
-                            await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AnalyzeResultsScreen(
-                                        classification: classification)));
-                          } catch (e) {
-                            print(e);
+          body: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Center(
+                  child: Image.file(picture),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    color: Colors.white,
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            try {
+                              await processImage(picture);
+
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        title: Text(sortClassification()[0]),
+                                        content: TextField(
+                                          textAlign: TextAlign.center,
+                                          onChanged: (value) {},
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            hintText: 'Enter oz',
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: (() {
+                                                Navigator.pop(context);
+                                              }),
+                                              child: const Text(
+                                                "Cancel",
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              )),
+                                          TextButton(
+                                              onPressed: (() {
+                                                Navigator.popUntil(context,
+                                                    (route) {
+                                                  return count++ == 2;
+                                                });
+                                              }),
+                                              child: const Text("Submit"))
+                                        ],
+                                      ));
+
+                              // await Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => AnalyzeResultsScreen(
+                              //             classification: classification)));
+                            } catch (e) {
+                              print(e);
+                              setState(() {
+                                showSpinner = false;
+                              });
+                            }
                             setState(() {
                               showSpinner = false;
                             });
-                          }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo[800],
-                        ),
-                        child: const Text(
-                          "Analyze",
-                          style: TextStyle(color: Colors.white),
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.indigo[800],
+                          ),
+                          child: const Text(
+                            "Analyze",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -155,7 +216,7 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
   }
 
   // Process picked image
-  Future<void> processImage(File imagePath) async {
+  Future<bool> processImage(File imagePath) async {
     final imageData = imagePath.readAsBytesSync();
 
     // Decode image using package:image/image.dart (https://pub.dev/image)
@@ -163,5 +224,6 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
     setState(() {});
     classification = await imageClassificationHelper.inferenceImage(image!);
     setState(() {});
+    return true;
   }
 }
