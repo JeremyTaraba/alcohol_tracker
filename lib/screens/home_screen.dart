@@ -2,6 +2,12 @@ import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firestore = FirebaseFirestore.instance;
+late User loggedInUser;
+String username = "";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +20,26 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 1;
 
   DateTime now = DateTime.now();
+
+  final _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser(); //figure out whos logged in
+  }
+
+  void getCurrentUser() async {
+    try {
+      // make sure user is authenticated
+      final user = await _auth.currentUser!;
+      if (user != null) {
+        loggedInUser = user; // gets the logged in user
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

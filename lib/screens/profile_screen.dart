@@ -1,3 +1,4 @@
+import 'package:alcohol_tracker/util/firebase_info.dart';
 import 'package:flutter/material.dart';
 
 import '../util/bottom_nav.dart';
@@ -17,6 +18,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String dropdownValue = list.first;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUserInfo(); //figure out whos logged in
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                profileData("Email", "email@gmail.com"),
+                profileData("Email", auth.currentUser?.email),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: Align(
@@ -99,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget profileData(String title, String Data) {
+  Widget profileData(String title, String? Data) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Column(

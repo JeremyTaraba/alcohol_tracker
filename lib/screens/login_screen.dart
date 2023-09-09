@@ -98,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(

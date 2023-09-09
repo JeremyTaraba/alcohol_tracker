@@ -1,4 +1,5 @@
 import 'package:alcohol_tracker/screens/camera_screen.dart';
+import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/screens/image_preview_screen_test.dart';
 import 'package:alcohol_tracker/screens/login_register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
