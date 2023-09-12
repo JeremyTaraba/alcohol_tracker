@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 final _firestore = FirebaseFirestore.instance;
 late User loggedInUser;
@@ -23,10 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _auth = FirebaseAuth.instance;
 
+  String _selectedDate = '';
+
+  final DateRangePickerController _controller = DateRangePickerController();
+  DateTime? confirmedDate;
+
   @override
   void initState() {
     super.initState();
     getCurrentUser(); //figure out whos logged in
+    _controller.displayDate =
+        DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+    _selectedDate = _controller.displayDate.toString().split(" ")[0];
   }
 
   void getCurrentUser() async {
@@ -78,12 +87,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "August 20 - 27",
+                        "Week of $_selectedDate",
                         style: TextStyle(fontSize: 28),
                       ),
-                      Icon(
-                        Icons.arrow_drop_down,
-                        size: 50,
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => AlertDialog(
+                                    scrollable: true,
+                                    actionsAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    content: datePicker(),
+                                  ));
+                        },
+                        icon: Icon(Icons.arrow_drop_down, size: 50),
                       )
                     ],
                   ),
@@ -196,6 +215,40 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           bottomNavigationBar: bottomNav(selectedIndex: selectedIndex),
         ),
+      ),
+    );
+  }
+
+  Container datePicker() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2,
+      child: SfDateRangePicker(
+        showActionButtons: true,
+        headerHeight: 40,
+        initialSelectedDate:
+            DateTime.now().subtract(Duration(days: DateTime.now().weekday)),
+        selectionMode: DateRangePickerSelectionMode.single,
+        view: DateRangePickerView.month,
+        selectableDayPredicate: (DateTime dateTime) {
+          if (dateTime.weekday == 7) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        controller: _controller,
+        onSubmit: (value) {
+          _controller.displayDate = value as DateTime?;
+
+          setState(() {
+            _selectedDate = _controller.displayDate.toString().split(" ")[0];
+          });
+          Navigator.pop(context);
+        },
+        onCancel: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }

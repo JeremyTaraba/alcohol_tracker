@@ -1,4 +1,3 @@
-import 'package:alcohol_tracker/screens/image_preview_screen.dart';
 import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
