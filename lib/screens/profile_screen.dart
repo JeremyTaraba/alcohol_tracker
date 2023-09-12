@@ -1,4 +1,5 @@
 import 'package:alcohol_tracker/util/firebase_info.dart';
+import 'package:alcohol_tracker/util/user_info.dart';
 import 'package:flutter/material.dart';
 
 import '../util/bottom_nav.dart';
@@ -18,11 +19,17 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String dropdownValue = list.first;
+  late String name = "";
 
   @override
   void initState() {
     super.initState();
-    getCurrentUserInfo(); //figure out whos logged in
+    getUser(); //figure out whos logged in
+  }
+
+  getUser() async {
+    name = await getCurrentUsername();
+    setState(() {});
   }
 
   @override
@@ -37,8 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                profileData("Name", "Name goes here"),
-                profileData("Age", "22"),
+                profileData("Name", user_info_Name),
+                //profileData("Age", "22"),
                 const Padding(
                   padding: EdgeInsets.only(left: 30.0),
                   child: Text(
@@ -89,7 +96,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          auth.signOut();
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "Logout",
                           style: TextStyle(fontSize: 24),

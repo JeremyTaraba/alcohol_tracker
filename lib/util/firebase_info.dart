@@ -21,3 +21,25 @@ void getCurrentUserInfo() async {
     print(e);
   }
 }
+
+Future<String> getCurrentUsername() async {
+  try {
+    // make sure user is authenticated
+    final user = await auth.currentUser!;
+    if (user != null) {
+      loggedInUser = user; // gets the logged in user
+    }
+
+    //for getting the username
+    var docRef = _firestore.collection('names').doc(loggedInUser.email);
+    DocumentSnapshot doc = await docRef.get();
+    final data = await doc.data() as Map<String, dynamic>;
+
+    if (data["name"] != "") {
+      return data["name"];
+    }
+  } catch (e) {
+    print(e);
+  }
+  return "";
+}

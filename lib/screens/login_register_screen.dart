@@ -3,8 +3,26 @@ import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
 import 'package:flutter/material.dart';
 
-class LoginRegisterScreen extends StatelessWidget {
-  const LoginRegisterScreen({super.key});
+class LoginRegisterScreen extends StatefulWidget {
+  LoginRegisterScreen({super.key, required this.backgroundImage});
+  AssetImage backgroundImage;
+
+  @override
+  State<LoginRegisterScreen> createState() => _LoginRegisterScreenState();
+}
+
+class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(
+        const AssetImage("images/blue_drink_mixing_background.jpg"), context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +46,7 @@ class LoginRegisterScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: EdgeInsets.only(top: 50.0),
                       child: Text(
                         "Hello",
                         style: TextStyle(
@@ -40,8 +58,9 @@ class LoginRegisterScreen extends StatelessWidget {
                     Text(
                       "Welcome to Drink Trackr",
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 32,
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

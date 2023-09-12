@@ -1,6 +1,3 @@
-import 'package:alcohol_tracker/screens/camera_screen.dart';
-import 'package:alcohol_tracker/screens/home_screen.dart';
-import 'package:alcohol_tracker/screens/image_preview_screen_test.dart';
 import 'package:alcohol_tracker/screens/login_register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +15,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    AssetImage backgroundImage =
+        const AssetImage("images/blue_drink_mixing_background.jpg");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Alcohol Tracker',
@@ -25,7 +24,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: LoginRegisterScreen(),
+      home: LoginRegisterScreen(
+        backgroundImage: backgroundImage,
+      ),
     );
   }
 }

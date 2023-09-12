@@ -1,7 +1,9 @@
 import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/screens/signup_screen.dart';
 import 'package:alcohol_tracker/util/buttons.dart';
+import 'package:alcohol_tracker/util/firebase_info.dart';
 import 'package:alcohol_tracker/util/objects.dart';
+import 'package:alcohol_tracker/util/user_info.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../util/constants.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,10 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _auth = FirebaseAuth.instance;
   bool showSpinner = false;
+  bool loadedScreen = false;
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    loadedScreen = true;
 
     return Container(
       color: Colors.lightBlue,
@@ -50,13 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: screenHeight / 5),
-                child: Container(
+                child: AnimatedContainer(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(50),
                         topLeft: Radius.circular(50)),
                   ),
+                  duration: const Duration(seconds: 2),
                   child: Column(
                     children: [
                       Padding(
@@ -98,6 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
+
+                          user_info_Name = await getCurrentUsername();
 
                           Navigator.push(
                               context,

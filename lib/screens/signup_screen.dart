@@ -1,12 +1,16 @@
 import 'package:alcohol_tracker/screens/home_screen.dart';
 import 'package:alcohol_tracker/screens/login_screen.dart';
+import 'package:alcohol_tracker/util/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../util/buttons.dart';
 import '../util/constants.dart';
 import '../util/objects.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -24,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   int checkInputFields = 0;
   final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -166,6 +171,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       email: email, password: password);
                               if (newUser != null) {
                                 //we got a newUser back
+                                _firestore.collection('names').doc(email).set({
+                                  'name': name,
+                                });
+
+                                user_info_Name = name;
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
