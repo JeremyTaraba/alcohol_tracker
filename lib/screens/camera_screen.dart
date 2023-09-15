@@ -2,7 +2,7 @@ import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import 'image_preview_screen_test.dart';
+import 'image_preview_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -107,7 +107,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ImagePreviewScreenTest(
+                                              ImagePreviewScreen(
                                                   file: picture)));
                                 } on CameraException catch (e) {
                                   debugPrint(

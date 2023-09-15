@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:alcohol_tracker/image_helper/image_classification_helper.dart';
-import 'package:alcohol_tracker/screens/analyze_result_screen.dart';
+
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -10,15 +11,20 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:image/image.dart' as img;
 
-class ImagePreviewScreenTest extends StatefulWidget {
-  ImagePreviewScreenTest({super.key, required this.file});
+import '../util/firebase_info.dart';
+import '../util/objects.dart';
+
+final _firestore = FirebaseFirestore.instance; //for the database
+
+class ImagePreviewScreen extends StatefulWidget {
+  ImagePreviewScreen({super.key, required this.file});
   XFile file;
 
   @override
-  State<ImagePreviewScreenTest> createState() => _ImagePreviewScreenTestState();
+  State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();
 }
 
-class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
+class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   late final Interpreter interpreter;
 
   late Tensor inputTensor;
@@ -39,6 +45,10 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
 
   late List<String> topResults;
   late List<MapEntry<String, double>> sortedResults;
+
+  late Map<String, int> submittedInfo;
+
+  int ouncesEntered = 0;
 
   List<String> sortClassification() {
     sortedResults = classification.entries.toList()
@@ -61,7 +71,6 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initTensorFlow();
     _loadLabels();
@@ -119,8 +128,13 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
                                         title: Text(sortClassification()[0]),
                                         content: TextField(
                                           textAlign: TextAlign.center,
-                                          onChanged: (value) {},
-                                          keyboardType: TextInputType.number,
+                                          onChanged: (value) {
+                                            ouncesEntered = int.parse(value);
+                                          },
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: false,
+                                                  signed: false),
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(
                                                 borderRadius:
@@ -139,7 +153,31 @@ class _ImagePreviewScreenTestState extends State<ImagePreviewScreenTest> {
                                                     color: Colors.red),
                                               )),
                                           TextButton(
-                                              onPressed: (() {
+                                              onPressed: (() async {
+                                                submittedInfo = {
+                                                  sortClassification()[0]:
+                                                      ouncesEntered
+                                                };
+                                                try {
+                                                  await _firestore
+                                                      .collection('drink_log')
+                                                      .doc(auth
+                                                          .currentUser?.email)
+                                                      .set(
+                                                    {
+                                                      DateTime.now()
+                                                              .toString()
+                                                              .split(" ")[0]:
+                                                          submittedInfo,
+                                                    },
+                                                    SetOptions(merge: true),
+                                                  );
+                                                } catch (e) {
+                                                  print(e);
+                                                }
+
+                                                mySnackBar(
+                                                    "Submitted", context);
                                                 Navigator.popUntil(context,
                                                     (route) {
                                                   return count++ == 2;

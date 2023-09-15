@@ -1,6 +1,6 @@
 import 'package:alcohol_tracker/screens/history_screen.dart';
 import 'package:alcohol_tracker/screens/home_screen.dart';
-import 'package:alcohol_tracker/screens/image_preview_screen_test.dart';
+import 'package:alcohol_tracker/screens/image_preview_screen.dart';
 import 'package:alcohol_tracker/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,6 @@ class bottomNav extends StatefulWidget {
 
 class _bottomNavState extends State<bottomNav> {
   void onItemTap(int index) {
-    
     if (index == 0) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => ProfileScreen()));
