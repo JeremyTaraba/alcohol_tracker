@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 final _firestore = FirebaseFirestore.instance; //for the database
 final auth = FirebaseAuth.instance;
 late User loggedInUser;
-String username = "";
+
 String? userEmail = "";
 
 void getCurrentUserInfo() async {
@@ -42,4 +42,30 @@ Future<String> getCurrentUsername() async {
     print(e);
   }
   return "";
+}
+
+Future<List<double>> getWeeklyLog(DateTime date) async {
+  late List<double> weeklyLog;
+  try {
+    final user = await auth.currentUser!;
+    if (user != null) {
+      loggedInUser = user; // gets the logged in user
+    }
+
+    var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+    DocumentSnapshot doc = await docRef.get();
+    final data = await doc.data() as Map<String, dynamic>;
+
+    for (int i = 0; i < 7; i++) {
+      if (data.values.contains("2023-09")) {
+        //weeklyLog.add(data.entries.);
+      }
+    }
+
+    print(data);
+  } catch (e) {
+    print(e);
+  }
+
+  return [];
 }

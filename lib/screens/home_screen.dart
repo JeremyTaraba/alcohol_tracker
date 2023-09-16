@@ -1,4 +1,5 @@
 import 'package:alcohol_tracker/util/bottom_nav.dart';
+import 'package:alcohol_tracker/util/firebase_info.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -28,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime? confirmedDate;
+
+  late List<double> weeklyLog;
 
   @override
   void initState() {
@@ -244,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _selectedDate = _controller.displayDate.toString().split(" ")[0];
           });
+          getWeeklyLog(DateTime.now());
           Navigator.pop(context);
         },
         onCancel: () {
