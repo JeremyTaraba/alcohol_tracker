@@ -106,7 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
 
-                          user_info_Name = await getCurrentUsername();
+                          user_Info_Name = await getCurrentUsername();
+                          user_Info_Gender = await getGender();
 
                           Navigator.push(
                               context,

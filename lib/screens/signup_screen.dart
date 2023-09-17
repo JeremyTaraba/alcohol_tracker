@@ -171,11 +171,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       email: email, password: password);
                               if (newUser != null) {
                                 //we got a newUser back
-                                _firestore.collection('names').doc(email).set({
+                                _firestore
+                                    .collection('profile_info')
+                                    .doc(email)
+                                    .set({
                                   'name': name,
                                 });
+                                _firestore
+                                    .collection('profile_info')
+                                    .doc(email)
+                                    .set({
+                                  'gender': "Prefer not to say",
+                                });
 
-                                user_info_Name = name;
+                                user_Info_Name = name;
 
                                 Navigator.push(
                                     context,

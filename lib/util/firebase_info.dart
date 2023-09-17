@@ -33,7 +33,7 @@ Future<String> getCurrentUsername() async {
     }
 
     //for getting the username
-    var docRef = _firestore.collection('names').doc(loggedInUser.email);
+    var docRef = _firestore.collection('profile_info').doc(loggedInUser.email);
     DocumentSnapshot doc = await docRef.get();
     final data = await doc.data() as Map<String, dynamic>;
 
@@ -44,6 +44,28 @@ Future<String> getCurrentUsername() async {
     print(e);
   }
   return "";
+}
+
+Future<String> getGender() async {
+  try {
+    // make sure user is authenticated
+    final user = await auth.currentUser!;
+    if (user != null) {
+      loggedInUser = user; // gets the logged in user
+    }
+
+    //for getting the username
+    var docRef = _firestore.collection('profile_info').doc(loggedInUser.email);
+    DocumentSnapshot doc = await docRef.get();
+    final data = await doc.data() as Map<String, dynamic>;
+
+    if (data["gender"] != "") {
+      return data["gender"];
+    }
+  } catch (e) {
+    print(e);
+  }
+  return "Prefer not to say";
 }
 
 Future<List<int>> getWeeklyLog(String date) async {

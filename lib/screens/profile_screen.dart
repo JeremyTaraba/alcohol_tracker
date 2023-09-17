@@ -1,8 +1,11 @@
 import 'package:alcohol_tracker/util/firebase_info.dart';
 import 'package:alcohol_tracker/util/user_info.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../util/bottom_nav.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 const List<String> list = <String>[
   'Prefer not to say',
@@ -18,18 +21,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String dropdownValue = list.first;
-  late String name = "";
+  String dropdownValue = user_Info_Gender;
 
   @override
   void initState() {
     super.initState();
-    getUser(); //figure out whos logged in
-  }
-
-  getUser() async {
-    name = await getCurrentUsername();
-    setState(() {});
   }
 
   @override
@@ -44,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                profileData("Name", user_info_Name),
+                profileData("Name", user_Info_Name),
                 //profileData("Age", "22"),
                 const Padding(
                   padding: EdgeInsets.only(left: 30.0),
@@ -76,6 +72,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             // This is called when the user selects an item.
                             setState(() {
                               dropdownValue = value!;
+                              _firestore
+                                  .collection('profile_info')
+                                  .doc(auth.currentUser?.email)
+                                  .update({
+                                'gender': value,
+                              });
+                              user_Info_Gender = value;
                             });
                           },
                           items: list
