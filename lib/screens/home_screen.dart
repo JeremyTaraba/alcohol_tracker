@@ -30,27 +30,23 @@ class _HomeScreenState extends State<HomeScreen> {
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime? confirmedDate;
 
-  late List<double> weeklyLog;
+  List<int> weeklyLog = [0, 0, 0, 0, 0, 0, 0];
 
   @override
   void initState() {
     super.initState();
-    getCurrentUser(); //figure out whos logged in
+    //figure out whos logged in
     _controller.displayDate =
         DateTime.now().subtract(Duration(days: DateTime.now().weekday));
     _selectedDate = _controller.displayDate.toString().split(" ")[0];
+    getDrinkLog();
   }
 
-  void getCurrentUser() async {
-    try {
-      // make sure user is authenticated
-      final user = await _auth.currentUser!;
-      if (user != null) {
-        loggedInUser = user; // gets the logged in user
-      }
-    } catch (e) {
-      print(e);
-    }
+  //this gets called every time and we make a read everytime
+  //TODO: make it so when you log in these values are saved so we don't read every time unless something changed
+  getDrinkLog() async {
+    weeklyLog = await getWeeklyLog(_selectedDate);
+    setState(() {});
   }
 
   @override
@@ -146,15 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SfSparkBarChart(
                             labelDisplayMode: SparkChartLabelDisplayMode.all,
                             axisLineColor: Colors.transparent,
-                            data: <double>[
-                              10,
-                              6,
-                              8,
-                              5,
-                              11,
-                              5,
-                              2,
-                            ],
+                            data: weeklyLog,
                             color: Colors.lightBlueAccent,
                           ),
                         ),
@@ -241,14 +229,17 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         controller: _controller,
-        onSubmit: (value) {
+        onSubmit: (value) async {
           _controller.displayDate = value as DateTime?;
 
+          Navigator.pop(context);
           setState(() {
             _selectedDate = _controller.displayDate.toString().split(" ")[0];
           });
-          getWeeklyLog(DateTime.now());
-          Navigator.pop(context);
+
+          weeklyLog = await getWeeklyLog(_selectedDate);
+
+          setState(() {});
         },
         onCancel: () {
           Navigator.pop(context);
