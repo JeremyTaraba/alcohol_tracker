@@ -32,12 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<int> weeklyLog = [0, 0, 0, 0, 0, 0, 0];
 
+  DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
+
   @override
   void initState() {
     super.initState();
     //figure out whos logged in
-    _controller.displayDate =
-        DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+    _controller.displayDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
     _selectedDate = _controller.displayDate.toString().split(" ")[0];
     getDrinkLog();
   }
@@ -47,6 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
   getDrinkLog() async {
     weeklyLog = await getWeeklyLog(_selectedDate);
     setState(() {});
+  }
+
+  getWeeklyDrinks() async {
+    drinksInAWeek = await getDrinksInWeek(_selectedDate);
   }
 
   @override
@@ -73,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 welcomeMessage(),
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -82,12 +87,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: 15,
                 ),
                 child: Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.lightBlueAccent, width: 3)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         "Week of $_selectedDate",
-                        style: TextStyle(fontSize: 28),
+                        style: const TextStyle(fontSize: 28),
                       ),
                       IconButton(
                         onPressed: () {
@@ -96,19 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               barrierDismissible: false,
                               builder: (BuildContext context) => AlertDialog(
                                     scrollable: true,
-                                    actionsAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    actionsAlignment: MainAxisAlignment.spaceAround,
                                     content: datePicker(),
                                   ));
                         },
-                        icon: Icon(Icons.arrow_drop_down, size: 50),
+                        icon: const Icon(Icons.arrow_drop_down, size: 50),
                       )
                     ],
                   ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border:
-                          Border.all(color: Colors.lightBlueAccent, width: 3)),
                 ),
               ),
               Padding(
@@ -132,13 +133,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             "Ounces:",
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, left: 5, right: 5),
+                          padding: const EdgeInsets.only(top: 20.0, left: 5, right: 5),
                           child: SfSparkBarChart(
                             labelDisplayMode: SparkChartLabelDisplayMode.all,
                             axisLineColor: Colors.transparent,
@@ -146,8 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.lightBlueAccent,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -177,27 +176,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Weekly Total",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Beer: 40oz",
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        Text(
-                          "Red Wine: 10oz",
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        Text(
-                          "White Wine: 8oz",
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ],
+                    child: ListView.builder(
+                      itemCount: drinksInAWeek.drinks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}oz",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -217,8 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SfDateRangePicker(
         showActionButtons: true,
         headerHeight: 40,
-        initialSelectedDate:
-            DateTime.now().subtract(Duration(days: DateTime.now().weekday)),
+        initialSelectedDate: DateTime.now().subtract(Duration(days: DateTime.now().weekday)),
         selectionMode: DateRangePickerSelectionMode.single,
         view: DateRangePickerView.month,
         selectableDayPredicate: (DateTime dateTime) {
@@ -231,6 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _controller,
         onSubmit: (value) async {
           _controller.displayDate = value as DateTime?;
+
+          drinksInAWeek = await getDrinksInWeek(_selectedDate);
 
           Navigator.pop(context);
           setState(() {

@@ -44,8 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image:
-                        AssetImage("images/blue_drink_mixing_background.jpg"),
+                    image: AssetImage("images/blue_drink_mixing_background.jpg"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -57,9 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          topLeft: Radius.circular(50)),
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
                     ),
                     child: Column(
                       children: [
@@ -78,18 +75,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             autocorrect: false,
                             keyboardType: TextInputType.text,
                             style: kTextFieldFont(),
-                            decoration: kTextFieldDecoration()
-                                .copyWith(hintText: "Name"),
+                            decoration: kTextFieldDecoration().copyWith(hintText: "Name"),
                             validator: (String? value) {
-                              return (value != null && value.isNotEmpty
-                                  ? null
-                                  : "Enter your name");
+                              return (value != null && value.isNotEmpty ? null : "Enter your name");
                             },
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 12.0, right: 12.0, bottom: 25),
+                          padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 25),
                           child: TextFormField(
                             //textformfield is used to do any sort of validation
                             textAlign: TextAlign.center,
@@ -100,22 +93,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             keyboardType: TextInputType.emailAddress,
                             obscureText: false,
                             style: kTextFieldFont(),
-                            decoration: kTextFieldDecoration()
-                                .copyWith(hintText: "Email"),
+                            decoration: kTextFieldDecoration().copyWith(hintText: "Email"),
                             validator: (String? value) {
-                              return (value != null &&
-                                      value.contains('@') &&
-                                      value.contains('.'))
-                                  ? null
-                                  : "Enter a valid email";
+                              return (value != null && value.contains('@') && value.contains('.')) ? null : "Enter a valid email";
                             },
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                           ),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 12.0, right: 12.0, bottom: 25.0),
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 25.0),
                             child: TextFormField(
                               textAlign: TextAlign.center,
                               onChanged: (value) {
@@ -127,16 +113,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               obscureText: true,
                               decoration: kTextFieldDecoration(),
                               validator: (String? value) {
-                                return (value != null && value.length > 5)
-                                    ? null
-                                    : "Must be at least 6 characters";
+                                return (value != null && value.length > 5) ? null : "Must be at least 6 characters";
                               },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                             )),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 12.0, right: 12.0, bottom: 25.0),
+                          padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 25.0),
                           child: TextFormField(
                             textAlign: TextAlign.center,
                             onChanged: (value) {
@@ -146,15 +128,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             style: kTextFieldFont(),
                             keyboardType: TextInputType.text,
                             obscureText: true,
-                            decoration: kTextFieldDecoration()
-                                .copyWith(hintText: "Confirm Password"),
+                            decoration: kTextFieldDecoration().copyWith(hintText: "Confirm Password"),
                             validator: (String? value) {
-                              return (value == password)
-                                  ? null
-                                  : "Passwords do not match";
+                              return (value == password) ? null : "Passwords do not match";
                             },
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                           ),
                         ),
                         SignUpButton(onPressed: () async {
@@ -166,34 +144,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                             // creating new user can fail and so need to do try and catch
                             try {
-                              final newUser =
-                                  await _auth.createUserWithEmailAndPassword(
-                                      email: email, password: password);
+                              final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
                               if (newUser != null) {
                                 //we got a newUser back
-                                _firestore
-                                    .collection('profile_info')
-                                    .doc(email)
-                                    .set({
+                                await _firestore.collection('profile_info').doc(email).set({
                                   'name': name,
-                                });
-                                _firestore
-                                    .collection('profile_info')
-                                    .doc(email)
-                                    .set({
                                   'gender': "Prefer not to say",
                                 });
 
+                                await _firestore.collection('drink_log').doc(email).set({});
+
                                 user_Info_Name = name;
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                               }
                             } catch (e) {
-                              mySnackBar(e.toString().split(']')[1],
-                                  context); //prints out error message
+                              mySnackBar(e.toString().split(']')[1], context); //prints out error message
                             }
                             setState(() {
                               showSpinner = false;
@@ -214,11 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginScreen()));
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                                     },
                                     child: const Text(
                                       "Login",

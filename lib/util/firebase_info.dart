@@ -83,14 +83,13 @@ Future<List<int>> getWeeklyLog(String date) async {
     for (int i = 0; i < 7; i++) {
       if (data.keys.contains(lookUpDate)) {
         weeklyLog.add(data[lookUpDate]["total"]);
-        print(data[lookUpDate]["total"]);
       } else {
         weeklyLog.add(0);
       }
-      print(lookUpDate);
+
       lookUpDate = incrementDay(lookUpDate);
     }
-    print(weeklyLog);
+
     return weeklyLog;
   } catch (e) {
     print(e);
@@ -105,10 +104,7 @@ String incrementDay(String date) {
   int monthAsNum = int.parse(separatedDate[1]);
   int dayAsNum = int.parse(separatedDate[2]);
   int yearAsNum = int.parse(separatedDate[0]);
-  if (monthAsNum == 4 ||
-      monthAsNum == 6 ||
-      monthAsNum == 9 ||
-      monthAsNum == 11) {
+  if (monthAsNum == 4 || monthAsNum == 6 || monthAsNum == 9 || monthAsNum == 11) {
     //months with 30 days
     if (dayAsNum == 30) {
       monthAsNum++;
@@ -165,4 +161,53 @@ bool isLeapYear(int year) {
     return true;
   }
   return false;
+}
+
+void setDrinkLogDatabase(Map<String, int> data) async {
+  await _firestore.collection('drink_log').doc(auth.currentUser?.email).set(
+    {DateTime.now().toString().split(" ")[0]: data},
+    SetOptions(merge: true),
+  );
+}
+
+Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
+  List<String> drinks = [];
+  List<int> drinkAmount = [];
+  DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
+
+  try {
+    final user = await auth.currentUser!;
+    if (user != null) {
+      loggedInUser = user; // gets the logged in user
+    }
+
+    var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+    DocumentSnapshot doc = await docRef.get();
+    final data = await doc.data() as Map<String, dynamic>;
+    String lookUpDate = date;
+    for (int i = 0; i < 7; i++) {
+      if (data.keys.contains(lookUpDate)) {
+        List<String> temp = data[lookUpDate].keys.toList();
+
+        for (int i = 0; i < temp.length; i++) {
+          drinks.add(temp[i]);
+          drinkAmount.add(data[lookUpDate][temp[i]]);
+        }
+      }
+
+      lookUpDate = incrementDay(lookUpDate);
+    }
+  } catch (e) {
+    print(e);
+  }
+  drinksInAWeek.drinks = drinks;
+  drinksInAWeek.drinkAmounts = drinkAmount;
+  print(drinks);
+  print(drinkAmount);
+  return drinksInAWeek;
+}
+
+class DrinksAndAmounts {
+  List<String> drinks = [];
+  List<int> drinkAmounts = [];
 }

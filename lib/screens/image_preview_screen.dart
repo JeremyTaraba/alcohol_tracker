@@ -17,8 +17,8 @@ import '../util/objects.dart';
 final _firestore = FirebaseFirestore.instance; //for the database
 
 class ImagePreviewScreen extends StatefulWidget {
-  ImagePreviewScreen({super.key, required this.file});
-  XFile file;
+  const ImagePreviewScreen({super.key, required this.file});
+  final XFile file;
 
   @override
   State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();
@@ -47,12 +47,12 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   late List<MapEntry<String, double>> sortedResults;
 
   late Map<String, int> submittedInfo;
+  Map<String, int> totalUpdate = {"total": 0};
 
   int ouncesEntered = 0;
 
   List<String> sortClassification() {
-    sortedResults = classification.entries.toList()
-      ..sort((a, b) => a.value.compareTo(b.value));
+    sortedResults = classification.entries.toList()..sort((a, b) => a.value.compareTo(b.value));
     List<String> topResults = [];
     for (int i = sortedResults.length - 1; i >= 0; i--) {
       topResults.add(sortedResults[i].key);
@@ -119,26 +119,18 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                               await processImage(picture);
 
                               showDialog(
-                                  context: context,
                                   barrierDismissible: false,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        actionsAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                  builder: (BuildContext context) => AlertDialog(
+                                        actionsAlignment: MainAxisAlignment.spaceAround,
                                         title: Text(sortClassification()[0]),
                                         content: TextField(
                                           textAlign: TextAlign.center,
                                           onChanged: (value) {
                                             ouncesEntered = int.parse(value);
                                           },
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: false,
-                                                  signed: false),
+                                          keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                                           decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
+                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                                             hintText: 'Enter oz',
                                           ),
                                         ),
@@ -149,43 +141,48 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                               }),
                                               child: const Text(
                                                 "Cancel",
-                                                style: TextStyle(
-                                                    color: Colors.red),
+                                                style: TextStyle(color: Colors.red),
                                               )),
                                           TextButton(
                                               onPressed: (() async {
-                                                submittedInfo = {
-                                                  sortClassification()[0]:
-                                                      ouncesEntered
-                                                };
+                                                submittedInfo = {sortClassification()[0]: ouncesEntered};
                                                 try {
-                                                  await _firestore
-                                                      .collection('drink_log')
-                                                      .doc(auth
-                                                          .currentUser?.email)
-                                                      .set(
-                                                    {
-                                                      DateTime.now()
-                                                              .toString()
-                                                              .split(" ")[0]:
-                                                          submittedInfo,
-                                                    },
-                                                    SetOptions(merge: true),
-                                                  );
+                                                  //see if drink already exists first
+                                                  var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+                                                  DocumentSnapshot doc = await docRef.get();
+                                                  final data = await doc.data() as Map<String, dynamic>;
+
+                                                  totalUpdate["total"] = submittedInfo.values.first;
+                                                  //if date already exists
+                                                  if (data[DateTime.now().toString().split(" ")[0]] != null) {
+                                                    //if drink we are trying to submit already exists
+                                                    if (data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] != null) {
+                                                      //update that data by adding to it
+                                                      totalUpdate["total"] =
+                                                          submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                                                      submittedInfo[submittedInfo.keys.first] = submittedInfo.values.first +
+                                                          data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] as int;
+                                                    } else {
+                                                      //if the drink does not exist, just update the total
+                                                      totalUpdate["total"] =
+                                                          submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                                                    }
+                                                  }
+                                                  setDrinkLogDatabase(submittedInfo);
+                                                  setDrinkLogDatabase(totalUpdate);
                                                 } catch (e) {
                                                   print(e);
                                                 }
 
-                                                mySnackBar(
-                                                    "Submitted", context);
-                                                Navigator.popUntil(context,
-                                                    (route) {
+                                                mySnackBar("Submitted", context);
+                                                Navigator.popUntil(context, (route) {
                                                   return count++ == 2;
                                                 });
                                               }),
                                               child: const Text("Submit"))
                                         ],
-                                      ));
+                                      ),
+                                  context: context);
 
                               // await Navigator.push(
                               //     context,
@@ -223,8 +220,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   }
 
   Future<void> initTensorFlow() async {
-    interpreter =
-        await Interpreter.fromAsset('assets/mobilenet_v1_1.0_224_quant.tflite');
+    interpreter = await Interpreter.fromAsset('assets/mobilenet_v1_1.0_224_quant.tflite');
 
     // Get tensor input shape [1, 224, 224, 3]
     inputTensor = interpreter.getInputTensors().first;
@@ -234,8 +230,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   }
 
   Future<void> _loadLabels() async {
-    final labelTxt =
-        await rootBundle.loadString('assets/labels_mobilenet_quant_v1_224.txt');
+    final labelTxt = await rootBundle.loadString('assets/labels_mobilenet_quant_v1_224.txt');
     labels = labelTxt.split('\n');
   }
 
@@ -245,8 +240,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
       return;
     }
     _isProcessing = true;
-    classification =
-        await imageClassificationHelper.inferenceCameraFrame(cameraImage);
+    classification = await imageClassificationHelper.inferenceCameraFrame(cameraImage);
     _isProcessing = false;
     if (mounted) {
       setState(() {});
