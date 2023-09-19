@@ -3,11 +3,10 @@ import 'package:alcohol_tracker/util/firebase_info.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-final _firestore = FirebaseFirestore.instance;
 late User loggedInUser;
 String username = "";
 
@@ -34,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
 
+  List<Map<String, int>> drinksInAWeek2 = [];
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller.displayDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
     _selectedDate = _controller.displayDate.toString().split(" ")[0];
     getDrinkLog();
+    getWeeklyDrinks();
   }
 
   //this gets called every time and we make a read everytime
@@ -76,9 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           body: Column(
             children: [
-              Text(
-                welcomeMessage(),
-                style: const TextStyle(fontSize: 24),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  welcomeMessage(),
+                  style: const TextStyle(fontSize: 24),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -136,13 +141,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0, left: 5, right: 5),
-                          child: SfSparkBarChart(
-                            labelDisplayMode: SparkChartLabelDisplayMode.all,
-                            axisLineColor: Colors.transparent,
-                            data: weeklyLog,
-                            color: Colors.lightBlueAccent,
+                        Expanded(
+                          //this Expanded is here to stop an exception with dart:paint from happening
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0, left: 5, right: 5),
+                            child: SfSparkBarChart(
+                              labelDisplayMode: SparkChartLabelDisplayMode.all,
+                              axisLineColor: Colors.transparent,
+                              data: weeklyLog,
+                              color: Colors.lightBlueAccent,
+                            ),
                           ),
                         ),
                         const Padding(
@@ -166,28 +174,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Container(
-                  height: 200,
-                  width: 350,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.lightBlueAccent, width: 3),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: ListView.builder(
-                      itemCount: drinksInAWeek.drinks.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(
-                            "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}oz",
-                            style: TextStyle(fontSize: 24),
-                          ),
-                        );
-                      },
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Weekly Totals:",
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                  ),
+                    Container(
+                      height: 200,
+                      width: 350,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                        child: ListView.builder(
+                          itemCount: drinksInAWeek.drinks.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              dense: true,
+                              visualDensity: VisualDensity(vertical: -4),
+                              title: Text(
+                                "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}",
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -171,9 +172,9 @@ void setDrinkLogDatabase(Map<String, int> data) async {
 }
 
 Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
-  List<String> drinks = [];
-  List<int> drinkAmount = [];
   DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
+  Map<String, int> drinksFixed = {};
+  Set<String> drinksSeenSoFar = {};
 
   try {
     final user = await auth.currentUser!;
@@ -185,13 +186,20 @@ Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
     DocumentSnapshot doc = await docRef.get();
     final data = await doc.data() as Map<String, dynamic>;
     String lookUpDate = date;
+
     for (int i = 0; i < 7; i++) {
       if (data.keys.contains(lookUpDate)) {
         List<String> temp = data[lookUpDate].keys.toList();
 
         for (int i = 0; i < temp.length; i++) {
-          drinks.add(temp[i]);
-          drinkAmount.add(data[lookUpDate][temp[i]]);
+          if (temp[i] == "total") {
+            //skip it
+          } else if (drinksSeenSoFar.contains(temp[i])) {
+            drinksFixed.update(temp[i], (value) => data[lookUpDate][temp[i]] + drinksFixed[temp[i]]!);
+          } else {
+            drinksSeenSoFar.add(temp[i]);
+            drinksFixed[temp[i]] = data[lookUpDate][temp[i]];
+          }
         }
       }
 
@@ -200,10 +208,14 @@ Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
   } catch (e) {
     print(e);
   }
-  drinksInAWeek.drinks = drinks;
-  drinksInAWeek.drinkAmounts = drinkAmount;
-  print(drinks);
-  print(drinkAmount);
+  //Now we need to find duplicates of drinks and remove them while summing their drinkAmounts together
+
+  drinksFixed.forEach((key, value) {
+    drinksInAWeek.drinks.add(key);
+    drinksInAWeek.drinkAmounts.add(value);
+  });
+
+  print(drinksInAWeek.drinks);
   return drinksInAWeek;
 }
 
