@@ -1,5 +1,9 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:alcohol_tracker/util/calendar_utils.dart';
 
 final _firestore = FirebaseFirestore.instance; //for the database
 final auth = FirebaseAuth.instance;
@@ -217,4 +221,37 @@ Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
 class DrinksAndAmounts {
   List<String> drinks = [];
   List<int> drinkAmounts = [];
+}
+
+Future<LinkedHashMap<DateTime, List<Event>>> getHistoryOfDrinks() async {
+  LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap();
+  List<Event> listOfDrinks = [];
+
+  try {
+    final user = await auth.currentUser!;
+    if (user != null) {
+      loggedInUser = user; // gets the logged in user
+    }
+
+    var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+    DocumentSnapshot doc = await docRef.get();
+    final data = await doc.data() as Map<String, dynamic>;
+
+    data.forEach(
+      (key, value) {
+        data[key].forEach((innerKey, innerValue) {
+          if (innerKey != "total") {
+            listOfDrinks.add(Event("$innerKey: ${innerValue.toString()} oz"));
+          }
+        });
+        events[DateTime.parse("$key 00:00:00.000")] = listOfDrinks.toList();
+        listOfDrinks.clear();
+      },
+    );
+  } catch (e) {
+    print(e);
+  }
+
+  //print(events);
+  return events;
 }
