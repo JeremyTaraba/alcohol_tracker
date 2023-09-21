@@ -22,14 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DateTime now = DateTime.now();
 
-  final _auth = FirebaseAuth.instance;
-
   String _selectedDate = '';
 
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime? confirmedDate;
 
-  List<int> weeklyLog = [0, 0, 0, 0, 0, 0, 0];
+  List<int> weeklyLog = [0, 0, 0, 0, 0, 0, 0]; //causes exception when its just 0's
 
   DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
 
@@ -177,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       "Weekly Totals:",
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
@@ -195,10 +193,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                               dense: true,
-                              visualDensity: VisualDensity(vertical: -4),
+                              visualDensity: const VisualDensity(vertical: -4),
                               title: Text(
                                 "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}",
-                                style: TextStyle(fontSize: 24),
+                                style: const TextStyle(fontSize: 24),
                               ),
                             );
                           },

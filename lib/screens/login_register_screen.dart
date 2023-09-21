@@ -4,8 +4,8 @@ import 'package:alcohol_tracker/util/buttons.dart';
 import 'package:flutter/material.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
-  LoginRegisterScreen({super.key, required this.backgroundImage});
-  AssetImage backgroundImage;
+  const LoginRegisterScreen({super.key, required this.backgroundImage});
+  final AssetImage backgroundImage;
 
   @override
   State<LoginRegisterScreen> createState() => _LoginRegisterScreenState();
@@ -19,8 +19,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
 
   @override
   void didChangeDependencies() {
-    precacheImage(
-        const AssetImage("images/blue_drink_mixing_background.jpg"), context);
+    precacheImage(const AssetImage("images/blue_drink_mixing_background.jpg"), context);
     super.didChangeDependencies();
   }
 
@@ -49,10 +48,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                       padding: EdgeInsets.only(top: 50.0),
                       child: Text(
                         "Hello",
-                        style: TextStyle(
-                            fontSize: 64,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 64, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
                     Text(
@@ -74,8 +70,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                     children: [
                       LoginButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
                         },
                       ),
                       SizedBox(
@@ -83,8 +78,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                       ),
                       SignUpButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SignUpScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
                         },
                       ),
                     ],

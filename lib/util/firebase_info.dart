@@ -1,10 +1,5 @@
-import 'dart:collection';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance; //for the database
 final auth = FirebaseAuth.instance;
@@ -215,7 +210,7 @@ Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
     drinksInAWeek.drinkAmounts.add(value);
   });
 
-  print(drinksInAWeek.drinks);
+  //print(drinksInAWeek.drinks);
   return drinksInAWeek;
 }
 

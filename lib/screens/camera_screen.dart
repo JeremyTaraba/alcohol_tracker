@@ -23,7 +23,6 @@ class _CameraScreenState extends State<CameraScreen> {
   late Future<bool> _task;
   bool takingPicture = false;
 
-  @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.paused:
@@ -93,25 +92,16 @@ class _CameraScreenState extends State<CameraScreen> {
                                   await _controller.setFlashMode(FlashMode.off);
 
                                   //Makes it much faster
-                                  await _controller
-                                      .setFocusMode(FocusMode.locked);
+                                  await _controller.setFocusMode(FocusMode.locked);
 
-                                  XFile picture =
-                                      await _controller.takePicture();
+                                  XFile picture = await _controller.takePicture();
 
                                   //Makes it much faster
-                                  await _controller
-                                      .setFocusMode(FocusMode.locked);
+                                  await _controller.setFocusMode(FocusMode.locked);
 
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ImagePreviewScreen(
-                                                  file: picture)));
+                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(file: picture)));
                                 } on CameraException catch (e) {
-                                  debugPrint(
-                                      "Error occured while taking picture: $e");
+                                  debugPrint("Error occured while taking picture: $e");
                                   return;
                                 }
                               },
@@ -139,8 +129,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Future<bool> cameraSetup() async {
     cameras = await availableCameras();
 
-    _controller =
-        CameraController(cameras[0], ResolutionPreset.high, enableAudio: false);
+    _controller = CameraController(cameras[0], ResolutionPreset.high, enableAudio: false);
 
     _controller.initialize().then((_) {
       if (!mounted) {

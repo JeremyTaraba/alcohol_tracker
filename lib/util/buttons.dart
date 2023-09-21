@@ -13,7 +13,7 @@ class _RoundedButton extends StatelessWidget {
   final String title;
   final void Function() onPressed;
   final Color? textColor;
-  double horizontalPadding;
+  final double horizontalPadding;
 
   @override
   Widget build(BuildContext context) {

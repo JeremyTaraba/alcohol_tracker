@@ -1,6 +1,6 @@
 import 'package:alcohol_tracker/screens/history_screen.dart';
 import 'package:alcohol_tracker/screens/home_screen.dart';
-import 'package:alcohol_tracker/screens/image_preview_screen.dart';
+
 import 'package:alcohol_tracker/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ import '../screens/camera_screen.dart';
 
 class bottomNav extends StatefulWidget {
   bottomNav({required this.selectedIndex});
-  int selectedIndex;
+  final int selectedIndex;
 
   @override
   State<bottomNav> createState() => _bottomNavState();
@@ -17,20 +17,16 @@ class bottomNav extends StatefulWidget {
 class _bottomNavState extends State<bottomNav> {
   void onItemTap(int index) {
     if (index == 0) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
     }
     if (index == 1) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
     if (index == 2) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HistoryScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HistoryScreen()));
     }
     if (index == 3) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => CameraScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen()));
     }
   }
 

@@ -13,8 +13,6 @@ import '../util/constants.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -48,8 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image:
-                        AssetImage("images/blue_drink_mixing_background.jpg"),
+                    image: AssetImage("images/blue_drink_mixing_background.jpg"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -59,16 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: AnimatedContainer(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50),
-                        topLeft: Radius.circular(50)),
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
                   ),
                   duration: const Duration(seconds: 2),
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 12.0, right: 12.0, bottom: 25, top: 50),
+                        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 25, top: 50),
                         child: TextField(
                           textAlign: TextAlign.center,
                           onChanged: (value) {
@@ -77,13 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: kTextFieldFont(),
                           autocorrect: false,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: kTextFieldDecoration()
-                              .copyWith(hintText: "Email"),
+                          decoration: kTextFieldDecoration().copyWith(hintText: "Email"),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 12.0, right: 12.0, bottom: 25.0),
+                        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 25.0),
                         child: TextField(
                           textAlign: TextAlign.center,
                           onChanged: (value) {
@@ -93,8 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           autocorrect: false,
                           obscureText: true,
                           keyboardType: TextInputType.text,
-                          decoration: kTextFieldDecoration()
-                              .copyWith(hintText: "Password"),
+                          decoration: kTextFieldDecoration().copyWith(hintText: "Password"),
                         ),
                       ),
                       LoginButton(onPressed: () async {
@@ -103,16 +94,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
 
                         try {
-                          final user = await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
+                          final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                          if (user == null) {
+                            return;
+                          }
 
                           user_Info_Name = await getCurrentUsername();
                           user_Info_Gender = await getGender();
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                         } catch (e) {
                           mySnackBar(e.toString().split(']')[1], context);
                         }
@@ -144,11 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignUpScreen()));
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                                   },
                                   child: const Text(
                                     "Sign up",

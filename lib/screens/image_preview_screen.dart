@@ -41,8 +41,6 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
 
   late ImageClassificationHelper imageClassificationHelper;
 
-  late Future<bool> _task;
-
   late List<String> topResults;
   late List<MapEntry<String, double>> sortedResults;
 
