@@ -13,6 +13,7 @@ import 'package:image/image.dart' as img;
 
 import '../util/firebase_info.dart';
 import '../util/objects.dart';
+import '../util/user_info.dart';
 
 final _firestore = FirebaseFirestore.instance; //for the database
 
@@ -168,13 +169,17 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                                       submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
                                                 }
                                               }
+                                              String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];
                                               setDrinkLogDatabase(submittedInfo);
                                               setDrinkLogDatabase(totalUpdate);
+                                              user_Info_weeklyLog = await getWeeklyLog(date);
+                                              user_Info_drinksInAWeek = await getDrinksInWeek(date);
+                                              mySnackBar("Submitted", context);
                                             } catch (e) {
                                               print(e);
+                                              mySnackBar("$e", context);
                                             }
 
-                                            mySnackBar("Submitted", context);
                                             Navigator.popUntil(context, (route) {
                                               return count++ == 2;
                                             });
