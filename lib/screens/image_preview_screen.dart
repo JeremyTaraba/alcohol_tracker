@@ -87,7 +87,9 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
       child: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Scaffold(
+          backgroundColor: Colors.lightBlueAccent,
           appBar: AppBar(
+            backgroundColor: Colors.lightBlueAccent,
             centerTitle: true,
             title: Text("Image Preview"),
           ),
@@ -95,116 +97,112 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
             physics: NeverScrollableScrollPhysics(),
             child: Column(
               children: [
-                Center(
-                  child: Image.file(picture),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: Image.file(picture),
+                  ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    color: Colors.white,
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            try {
-                              await processImage(picture);
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  width: double.infinity,
+                  color: Colors.lightBlueAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          await processImage(picture);
 
-                              showDialog(
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) => AlertDialog(
-                                        actionsAlignment: MainAxisAlignment.spaceAround,
-                                        title: Text(sortClassification()[0]),
-                                        content: TextField(
-                                          textAlign: TextAlign.center,
-                                          onChanged: (value) {
-                                            ouncesEntered = int.parse(value);
-                                          },
-                                          keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                                            hintText: 'Enter oz',
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                              onPressed: (() {
-                                                Navigator.pop(context);
-                                              }),
-                                              child: const Text(
-                                                "Cancel",
-                                                style: TextStyle(color: Colors.red),
-                                              )),
-                                          TextButton(
-                                              onPressed: (() async {
-                                                submittedInfo = {sortClassification()[0]: ouncesEntered};
-                                                try {
-                                                  //see if drink already exists first
-                                                  var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
-                                                  DocumentSnapshot doc = await docRef.get();
-                                                  final data = await doc.data() as Map<String, dynamic>;
-
-                                                  totalUpdate["total"] = submittedInfo.values.first;
-                                                  //if date already exists
-                                                  if (data[DateTime.now().toString().split(" ")[0]] != null) {
-                                                    //if drink we are trying to submit already exists
-                                                    if (data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] != null) {
-                                                      //update that data by adding to it
-                                                      totalUpdate["total"] =
-                                                          submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
-                                                      submittedInfo[submittedInfo.keys.first] = submittedInfo.values.first +
-                                                          data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] as int;
-                                                    } else {
-                                                      //if the drink does not exist, just update the total
-                                                      totalUpdate["total"] =
-                                                          submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
-                                                    }
-                                                  }
-                                                  setDrinkLogDatabase(submittedInfo);
-                                                  setDrinkLogDatabase(totalUpdate);
-                                                } catch (e) {
-                                                  print(e);
-                                                }
-
-                                                mySnackBar("Submitted", context);
-                                                Navigator.popUntil(context, (route) {
-                                                  return count++ == 2;
-                                                });
-                                              }),
-                                              child: const Text("Submit"))
-                                        ],
+                          showDialog(
+                              barrierDismissible: false,
+                              builder: (BuildContext context) => AlertDialog(
+                                    actionsAlignment: MainAxisAlignment.spaceAround,
+                                    title: Text(sortClassification()[0]),
+                                    content: TextField(
+                                      textAlign: TextAlign.center,
+                                      onChanged: (value) {
+                                        ouncesEntered = int.parse(value);
+                                      },
+                                      keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                        hintText: 'Enter oz',
                                       ),
-                                  context: context);
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                          onPressed: (() {
+                                            Navigator.pop(context);
+                                          }),
+                                          child: const Text(
+                                            "Cancel",
+                                            style: TextStyle(color: Colors.red),
+                                          )),
+                                      TextButton(
+                                          onPressed: (() async {
+                                            submittedInfo = {sortClassification()[0]: ouncesEntered};
+                                            try {
+                                              //see if drink already exists first
+                                              var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+                                              DocumentSnapshot doc = await docRef.get();
+                                              final data = await doc.data() as Map<String, dynamic>;
 
-                              // await Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => AnalyzeResultsScreen(
-                              //             classification: classification)));
-                            } catch (e) {
-                              print(e);
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            }
-                            setState(() {
-                              showSpinner = false;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.indigo[800],
-                          ),
-                          child: const Text(
-                            "Analyze",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                                              totalUpdate["total"] = submittedInfo.values.first;
+                                              //if date already exists
+                                              if (data[DateTime.now().toString().split(" ")[0]] != null) {
+                                                //if drink we are trying to submit already exists
+                                                if (data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] != null) {
+                                                  //update that data by adding to it
+                                                  totalUpdate["total"] =
+                                                      submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                                                  submittedInfo[submittedInfo.keys.first] = submittedInfo.values.first +
+                                                      data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] as int;
+                                                } else {
+                                                  //if the drink does not exist, just update the total
+                                                  totalUpdate["total"] =
+                                                      submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                                                }
+                                              }
+                                              setDrinkLogDatabase(submittedInfo);
+                                              setDrinkLogDatabase(totalUpdate);
+                                            } catch (e) {
+                                              print(e);
+                                            }
+
+                                            mySnackBar("Submitted", context);
+                                            Navigator.popUntil(context, (route) {
+                                              return count++ == 2;
+                                            });
+                                          }),
+                                          child: const Text("Submit"))
+                                    ],
+                                  ),
+                              context: context);
+
+                          // await Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => AnalyzeResultsScreen(
+                          //             classification: classification)));
+                        } catch (e) {
+                          print(e);
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      },
+                      backgroundColor: Colors.white,
+                      child: const Text(
+                        "Analyze",
+                        style: TextStyle(fontSize: 24, color: Colors.indigo),
                       ),
                     ),
                   ),

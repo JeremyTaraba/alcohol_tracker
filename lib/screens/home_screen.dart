@@ -1,11 +1,15 @@
 import 'package:alcohol_tracker/util/bottom_nav.dart';
 import 'package:alcohol_tracker/util/firebase_info.dart';
+import 'package:alcohol_tracker/util/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+//TODO: Make it so you can type in the drink name
+//TODO:
 
 late User loggedInUser;
 String username = "";
@@ -31,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
 
-  List<Map<String, int>> drinksInAWeek2 = [];
+  String monthDay = "";
+  String todaysDate = "";
 
   @override
   void initState() {
@@ -39,12 +44,38 @@ class _HomeScreenState extends State<HomeScreen> {
     //figure out whos logged in
     _controller.displayDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
     _selectedDate = _controller.displayDate.toString().split(" ")[0];
-    getDrinkLog();
-    getWeeklyDrinks();
+    todaysDate = _controller.displayDate.toString().split(" ")[0];
+    weeklyLog = user_Info_weeklyLog;
+    drinksInAWeek = user_Info_drinksInAWeek;
+    monthDay = weekOf();
+  }
+
+  String weekOf() {
+    String month = "";
+    String day = "";
+    List<String> date = _selectedDate.split('-');
+    day = date[2];
+    month = date[1];
+    Map<String, String> monthNumToText = {
+      "01": "January",
+      "02": "February",
+      "03": "March",
+      "04": "April",
+      "05": "May",
+      "06": "June",
+      "07": "July",
+      "08": "August",
+      "09": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December",
+    };
+
+    return "${monthNumToText[month]} $day";
   }
 
   //this gets called every time and we make a read everytime
-  //TODO: make it so when you log in these values are saved so we don't read every time unless something changed
+
   getDrinkLog() async {
     weeklyLog = await getWeeklyLog(_selectedDate);
     setState(() {});
@@ -52,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getWeeklyDrinks() async {
     drinksInAWeek = await getDrinksInWeek(_selectedDate);
+    setState(() {});
   }
 
   @override
@@ -70,17 +102,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Container(
-      color: Colors.white,
+      color: Colors.lightBlueAccent,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.lightBlueAccent,
           body: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
                   welcomeMessage(),
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Merriweather'),
                 ),
               ),
               Padding(
@@ -90,13 +122,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: 15,
                 ),
                 child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.lightBlueAccent, width: 3)),
+                  decoration:
+                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.indigo, width: 3)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Week of $_selectedDate",
-                        style: const TextStyle(fontSize: 28),
+                        "Week of ${weekOf()}",
+                        style: const TextStyle(fontSize: 24, fontFamily: 'Merriweather'),
                       ),
                       IconButton(
                         onPressed: () {
@@ -125,8 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 300,
                   width: 350,
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                    border: Border.all(color: Colors.indigo, width: 3),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -136,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             "Ounces:",
-                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'Merriweather'),
                           ),
                         ),
                         Expanded(
@@ -148,21 +182,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               axisLineColor: Colors.transparent,
                               data: weeklyLog,
                               color: Colors.lightBlueAccent,
+                              labelStyle: const TextStyle(
+                                fontFamily: 'Merriweather',
+                              ),
                             ),
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("Sun"),
-                              Text("Mon"),
-                              Text("Tue"),
-                              Text("Wed"),
-                              Text("Thur"),
-                              Text("Fri"),
-                              Text("Sat"),
+                              textWithMerriweather('Sun'),
+                              textWithMerriweather('Mon'),
+                              textWithMerriweather('Tue'),
+                              textWithMerriweather('Wed'),
+                              textWithMerriweather('Thur'),
+                              textWithMerriweather('Fri'),
+                              textWithMerriweather('Sat'),
                             ],
                           ),
                         )
@@ -172,19 +209,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 15.0),
                 child: Column(
                   children: [
                     const Text(
                       "Weekly Totals:",
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'Merriweather'),
                     ),
                     Container(
                       height: 200,
                       width: 350,
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                        border: Border.all(color: Colors.indigo, width: 3),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
@@ -235,20 +273,27 @@ class _HomeScreenState extends State<HomeScreen> {
         onSubmit: (value) async {
           _controller.displayDate = value as DateTime?;
 
-          drinksInAWeek = await getDrinksInWeek(_selectedDate);
-
           Navigator.pop(context);
           setState(() {
             _selectedDate = _controller.displayDate.toString().split(" ")[0];
           });
-
-          weeklyLog = await getWeeklyLog(_selectedDate);
+          await getWeeklyDrinks();
+          await getDrinkLog();
 
           setState(() {});
         },
         onCancel: () {
           Navigator.pop(context);
         },
+      ),
+    );
+  }
+
+  Text textWithMerriweather(String t) {
+    return Text(
+      t,
+      style: const TextStyle(
+        fontFamily: 'Merriweather',
       ),
     );
   }

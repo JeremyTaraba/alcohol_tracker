@@ -43,11 +43,29 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.white,
           body: Stack(
             children: [
+              Hero(
+                tag: 'bg',
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/blue_drink_mixing_background.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
               Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/blue_drink_mixing_background.jpg"),
-                    fit: BoxFit.cover,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(.5),
+                      Colors.transparent,
+                      Colors.transparent,
+                    ],
                   ),
                 ),
               ),
@@ -101,7 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           user_Info_Name = await getCurrentUsername();
                           user_Info_Gender = await getGender();
-
+                          String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];
+                          user_Info_weeklyLog = await getWeeklyLog(date);
+                          user_Info_drinksInAWeek = await getDrinksInWeek(date);
                           Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                         } catch (e) {
                           mySnackBar(e.toString().split(']')[1], context);

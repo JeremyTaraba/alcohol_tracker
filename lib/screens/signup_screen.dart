@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../util/buttons.dart';
 import '../util/constants.dart';
+import '../util/firebase_info.dart';
 import '../util/objects.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -46,6 +47,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   image: DecorationImage(
                     image: AssetImage("images/blue_drink_mixing_background.jpg"),
                     fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(.5),
+                      Colors.transparent,
+                      Colors.transparent,
+                    ],
                   ),
                 ),
               ),
@@ -155,6 +171,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 await _firestore.collection('drink_log').doc(email).set({});
 
                                 user_Info_Name = name;
+                                user_Info_Gender = "Prefer not to say";
+                                user_Info_weeklyLog = [];
+                                user_Info_drinksInAWeek = DrinksAndAmounts();
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                               }

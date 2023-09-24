@@ -31,10 +31,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.lightBlueAccent,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.lightBlueAccent,
           body: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Column(
@@ -55,9 +55,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: double.infinity,
                     height: 50,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border:
-                          Border.all(color: Colors.lightBlueAccent, width: 3),
+                      border: Border.all(color: Colors.indigo, width: 3),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -66,23 +66,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           value: dropdownValue,
                           icon: const Icon(Icons.arrow_drop_down),
                           elevation: 0,
-                          style: const TextStyle(
-                              fontSize: 24, color: Colors.black),
+                          style: const TextStyle(fontSize: 24, color: Colors.black),
                           onChanged: (String? value) {
                             // This is called when the user selects an item.
                             setState(() {
                               dropdownValue = value!;
-                              _firestore
-                                  .collection('profile_info')
-                                  .doc(auth.currentUser?.email)
-                                  .update({
+                              _firestore.collection('profile_info').doc(auth.currentUser?.email).update({
                                 'gender': value,
                               });
                               user_Info_Gender = value;
                             });
                           },
-                          items: list
-                              .map<DropdownMenuItem<String>>((String value) {
+                          items: list.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -139,8 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.lightBlueAccent, width: 3),
+                border: Border.all(color: Colors.indigo, width: 3),
               ),
               child: Center(
                 child: Text(
