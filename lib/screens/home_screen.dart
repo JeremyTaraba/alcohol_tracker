@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 //TODO: Make it so you can type in the drink name
-//TODO:
+//TODO: Update AI
 
 late User loggedInUser;
 String username = "";
