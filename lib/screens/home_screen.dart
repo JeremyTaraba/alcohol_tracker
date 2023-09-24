@@ -8,8 +8,12 @@ import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../util/objects.dart';
+
 //TODO: Make it so you can type in the drink name
 //TODO: Update AI
+//TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
+//TODO: Update the local variables after submitting a drink
 
 late User loggedInUser;
 String username = "";
@@ -232,9 +236,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             return ListTile(
                               dense: true,
                               visualDensity: const VisualDensity(vertical: -4),
-                              title: Text(
-                                "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}",
-                                style: const TextStyle(fontSize: 24),
+                              title: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "${drinksInAWeek.drinks[index]}: ${drinksInAWeek.drinkAmounts[index]}",
+                                    style: const TextStyle(fontSize: 24, fontFamily: "Merriweather"),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 2.0),
+                                    child: Text(
+                                      " oz",
+                                      style: TextStyle(fontSize: 16, fontFamily: "Merriweather"),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           },

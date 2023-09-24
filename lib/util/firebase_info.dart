@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:alcohol_tracker/util/calendar_utils.dart';
 
+import 'objects.dart';
+
 final _firestore = FirebaseFirestore.instance; //for the database
 final auth = FirebaseAuth.instance;
 late User loggedInUser;
@@ -213,13 +215,12 @@ Future<DrinksAndAmounts> getDrinksInWeek(String date) async {
     drinksInAWeek.drinkAmounts.add(value);
   });
 
-  //print(drinksInAWeek.drinks);
-  return drinksInAWeek;
-}
+  //order drinks by largest value to lowest
+  quicksort(drinksInAWeek.drinkAmounts, drinksInAWeek.drinks, 0, drinksInAWeek.drinks.length - 1);
 
-class DrinksAndAmounts {
-  List<String> drinks = [];
-  List<int> drinkAmounts = [];
+  //print(drinksInAWeek.drinks);
+
+  return drinksInAWeek;
 }
 
 Future<LinkedHashMap<DateTime, List<Event>>> getHistoryOfDrinks() async {
