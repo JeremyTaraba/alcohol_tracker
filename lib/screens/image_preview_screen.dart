@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as imageLib;
@@ -79,6 +80,8 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
 
   bool showSpinner = false;
   int count = 0;
+  String drinkType = "";
+  String originalDrinkType = "";
 
   @override
   Widget build(BuildContext context) {
@@ -118,12 +121,28 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                         });
                         try {
                           await processImage(picture);
+                          originalDrinkType = sortClassification()[0];
+                          drinkType = originalDrinkType;
 
                           showDialog(
                               barrierDismissible: false,
                               builder: (BuildContext context) => AlertDialog(
                                     actionsAlignment: MainAxisAlignment.spaceAround,
-                                    title: Text(sortClassification()[0]),
+                                    title: TextFormField(
+                                      style: TextStyle(fontSize: 24),
+                                      initialValue: drinkType,
+                                      textCapitalization: TextCapitalization.words,
+                                      onChanged: (value) {
+                                        drinkType = value;
+                                      },
+                                      onTapOutside: (value) {
+                                        if (drinkType.isEmpty) {
+                                          drinkType = originalDrinkType;
+                                        }
+                                        drinkType = drinkType.trim();
+                                        drinkType = drinkType.split(' ').map((word) => word.capitalize()).join(' '); //capitalize everyword
+                                      },
+                                    ),
                                     content: TextField(
                                       textAlign: TextAlign.center,
                                       onChanged: (value) {
@@ -146,7 +165,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                           )),
                                       TextButton(
                                           onPressed: (() async {
-                                            submittedInfo = {sortClassification()[0]: ouncesEntered};
+                                            submittedInfo = {drinkType: ouncesEntered};
                                             try {
                                               //see if drink already exists first
                                               var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
@@ -178,6 +197,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                                             } catch (e) {
                                               print(e);
                                               mySnackBar("$e", context);
+                                              Navigator.pop(context);
                                             }
 
                                             Navigator.popUntil(context, (route) {
