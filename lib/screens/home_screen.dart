@@ -10,7 +10,6 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../util/objects.dart';
 
-//TODO: Make it so you can type in the drink name
 //TODO: Update AI
 //TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
 
