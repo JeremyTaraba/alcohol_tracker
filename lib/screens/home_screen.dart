@@ -10,9 +10,11 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../util/objects.dart';
 
+//TODO: Error when you signup and then immediately try to log something
 //TODO: Update AI
 //TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
-
+//TODO: Make it so history is only grabbed when choosing new date instead of everytime
+//TODO: Week should change on Sunday not on Monday
 late User loggedInUser;
 String username = "";
 
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime? confirmedDate;
 
-  List<int> weeklyLog = [0, 0, 0, 0, 0, 0, 0]; //causes exception when its just 0's
+  List<int> weeklyLog = []; //causes exception when its just 0's
 
   DrinksAndAmounts drinksInAWeek = DrinksAndAmounts();
 
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     //figure out whos logged in
-    _controller.displayDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+    _controller.displayDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday)); //1 = monday, 7 = sunday
     _selectedDate = _controller.displayDate.toString().split(" ")[0];
     todaysDate = _controller.displayDate.toString().split(" ")[0];
     weeklyLog = user_Info_weeklyLog;
