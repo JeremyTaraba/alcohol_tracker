@@ -15,8 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    AssetImage backgroundImage =
-        const AssetImage("images/blue_drink_mixing_background.jpg");
+    AssetImage backgroundImage = const AssetImage("images/blue_drink_mixing.jpg");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Alcohol Tracker',

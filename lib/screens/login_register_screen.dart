@@ -19,7 +19,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
 
   @override
   void didChangeDependencies() {
-    precacheImage(const AssetImage("images/blue_drink_mixing_background.jpg"), context);
+    precacheImage(const AssetImage("images/blue_drink_mixing.jpg"), context);
     super.didChangeDependencies();
   }
 
@@ -35,7 +35,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/blue_drink_mixing_background.jpg"),
+                  image: AssetImage("images/blue_drink_pour.jpg"),
                   fit: BoxFit.cover,
                 ),
               ),

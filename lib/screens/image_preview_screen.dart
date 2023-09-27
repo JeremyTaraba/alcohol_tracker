@@ -123,97 +123,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                           await processImage(picture);
                           originalDrinkType = sortClassification()[0];
                           drinkType = originalDrinkType;
-
-                          showDialog(
-                              barrierDismissible: false,
-                              builder: (BuildContext context) => AlertDialog(
-                                    actionsAlignment: MainAxisAlignment.spaceAround,
-                                    title: TextFormField(
-                                      style: TextStyle(fontSize: 24),
-                                      initialValue: drinkType,
-                                      textCapitalization: TextCapitalization.words,
-                                      onChanged: (value) {
-                                        drinkType = value;
-                                      },
-                                      onTapOutside: (value) {
-                                        if (drinkType.isEmpty) {
-                                          drinkType = originalDrinkType;
-                                        }
-                                        drinkType = drinkType.trim();
-                                        drinkType = drinkType.split(' ').map((word) => word.capitalize()).join(' '); //capitalize everyword
-                                      },
-                                    ),
-                                    content: TextField(
-                                      textAlign: TextAlign.center,
-                                      onChanged: (value) {
-                                        ouncesEntered = int.parse(value);
-                                      },
-                                      keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                                        hintText: 'Enter oz',
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                          onPressed: (() {
-                                            Navigator.pop(context);
-                                          }),
-                                          child: const Text(
-                                            "Cancel",
-                                            style: TextStyle(color: Colors.red),
-                                          )),
-                                      TextButton(
-                                          onPressed: (() async {
-                                            submittedInfo = {drinkType: ouncesEntered};
-                                            try {
-                                              //see if drink already exists first
-                                              var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
-                                              DocumentSnapshot doc = await docRef.get();
-                                              final data = await doc.data() as Map<String, dynamic>;
-
-                                              totalUpdate["total"] = submittedInfo.values.first;
-                                              //if date already exists
-                                              if (data[DateTime.now().toString().split(" ")[0]] != null) {
-                                                //if drink we are trying to submit already exists
-                                                if (data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] != null) {
-                                                  //update that data by adding to it
-                                                  totalUpdate["total"] =
-                                                      submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
-                                                  submittedInfo[submittedInfo.keys.first] = submittedInfo.values.first +
-                                                      data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] as int;
-                                                } else {
-                                                  //if the drink does not exist, just update the total
-                                                  totalUpdate["total"] =
-                                                      submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
-                                                }
-                                              }
-                                              String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];
-                                              setDrinkLogDatabase(submittedInfo);
-                                              setDrinkLogDatabase(totalUpdate);
-                                              user_Info_weeklyLog = await getWeeklyLog(date);
-                                              user_Info_drinksInAWeek = await getDrinksInWeek(date);
-                                              mySnackBar("Submitted", context);
-                                            } catch (e) {
-                                              print(e);
-                                              mySnackBar("$e", context);
-                                              Navigator.pop(context);
-                                            }
-
-                                            Navigator.popUntil(context, (route) {
-                                              return count++ == 2;
-                                            });
-                                          }),
-                                          child: const Text("Submit"))
-                                    ],
-                                  ),
-                              context: context);
-
-                          // await Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => AnalyzeResultsScreen(
-                          //             classification: classification)));
+                          _dialogBuilder(context);
                         } catch (e) {
                           print(e);
                           setState(() {
@@ -255,19 +165,6 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     labels = labelTxt.split('\n');
   }
 
-  Future<void> imageAnalysis(CameraImage cameraImage) async {
-    // if image is still analyze, skip this frame
-    if (_isProcessing) {
-      return;
-    }
-    _isProcessing = true;
-    classification = await imageClassificationHelper.inferenceCameraFrame(cameraImage);
-    _isProcessing = false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   // Process picked image
   Future<bool> processImage(File imagePath) async {
     final imageData = imagePath.readAsBytesSync();
@@ -278,5 +175,90 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     classification = await imageClassificationHelper.inferenceImage(image!);
     setState(() {});
     return true;
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog(
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceAround,
+              title: TextFormField(
+                style: const TextStyle(fontSize: 24),
+                initialValue: drinkType,
+                textCapitalization: TextCapitalization.words,
+                onChanged: (value) {
+                  drinkType = value;
+                },
+                onTapOutside: (value) {
+                  if (drinkType.isEmpty) {
+                    drinkType = originalDrinkType;
+                  }
+                  drinkType = drinkType.trim();
+                  drinkType = drinkType.split(' ').map((word) => word.capitalize()).join(' '); //capitalize everyword
+                },
+              ),
+              content: TextField(
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  ouncesEntered = int.parse(value);
+                },
+                keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                  hintText: 'Enter oz',
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.red),
+                    )),
+                TextButton(
+                    onPressed: (() async {
+                      submittedInfo = {drinkType: ouncesEntered};
+                      try {
+                        //see if drink already exists first
+                        var docRef = _firestore.collection('drink_log').doc(loggedInUser.email);
+                        DocumentSnapshot doc = await docRef.get();
+                        final data = doc.data() as Map<String, dynamic>;
+
+                        totalUpdate["total"] = submittedInfo.values.first;
+                        //if date already exists
+                        if (data[DateTime.now().toString().split(" ")[0]] != null) {
+                          //if drink we are trying to submit already exists
+                          if (data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] != null) {
+                            //update that data by adding to it
+                            totalUpdate["total"] = submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                            submittedInfo[submittedInfo.keys.first] =
+                                submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]][submittedInfo.keys.first] as int;
+                          } else {
+                            //if the drink does not exist, just update the total
+                            totalUpdate["total"] = submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
+                          }
+                        }
+                        String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];
+                        setDrinkLogDatabase(submittedInfo);
+                        setDrinkLogDatabase(totalUpdate);
+                        user_Info_weeklyLog = await getWeeklyLog(date);
+                        user_Info_drinksInAWeek = await getDrinksInWeek(date);
+                        mySnackBar("Submitted", context);
+                      } catch (e) {
+                        print(e);
+                        mySnackBar("$e", context);
+                        Navigator.pop(context);
+                      }
+
+                      Navigator.popUntil(context, (route) {
+                        return count++ == 2;
+                      });
+                    }),
+                    child: const Text("Submit"))
+              ],
+            ),
+        context: context);
   }
 }

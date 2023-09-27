@@ -10,11 +10,13 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../util/objects.dart';
 
-//TODO: Error when you signup and then immediately try to log something
 //TODO: Update AI
-//TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
-//TODO: Make it so history is only grabbed when choosing new date instead of everytime
+
 //TODO: Week should change on Sunday not on Monday
+//TODO: maybe make it so the chart doesnt actually render unless there is data to show since it causes error if it is blank
+//TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
+//TODO: Make it so history is only grabbed per month and only when choosing new date instead of everytime
+
 late User loggedInUser;
 String username = "";
 
