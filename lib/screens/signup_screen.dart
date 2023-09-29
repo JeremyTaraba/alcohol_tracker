@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../util/buttons.dart';
 import '../util/constants.dart';
-import '../util/firebase_info.dart';
 import '../util/objects.dart';
 
 final _firestore = FirebaseFirestore.instance;

@@ -26,8 +26,8 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'isolate_inference.dart';
 
 class ImageClassificationHelper {
-  static const modelPath = 'assets/model_with_cocktails.tflite';
-  static const labelsPath = 'assets/labels_with_cocktails.txt';
+  static const modelPath = 'assets/model.tflite';
+  static const labelsPath = 'assets/labels.txt';
 
   late final Interpreter interpreter;
   late final List<String> labels;
@@ -80,25 +80,21 @@ class ImageClassificationHelper {
 
   Future<Map<String, double>> _inference(InferenceModel inferenceModel) async {
     ReceivePort responsePort = ReceivePort();
-    isolateInference.sendPort
-        .send(inferenceModel..responsePort = responsePort.sendPort);
+    isolateInference.sendPort.send(inferenceModel..responsePort = responsePort.sendPort);
     // get inference result.
     var results = await responsePort.first;
     return results;
   }
 
   // inference camera frame
-  Future<Map<String, double>> inferenceCameraFrame(
-      CameraImage cameraImage) async {
-    var isolateModel = InferenceModel(cameraImage, null, interpreter.address,
-        labels, inputTensor.shape, outputTensor.shape);
+  Future<Map<String, double>> inferenceCameraFrame(CameraImage cameraImage) async {
+    var isolateModel = InferenceModel(cameraImage, null, interpreter.address, labels, inputTensor.shape, outputTensor.shape);
     return _inference(isolateModel);
   }
 
   // inference still image
   Future<Map<String, double>> inferenceImage(Image image) async {
-    var isolateModel = InferenceModel(null, image, interpreter.address, labels,
-        inputTensor.shape, outputTensor.shape);
+    var isolateModel = InferenceModel(null, image, interpreter.address, labels, inputTensor.shape, outputTensor.shape);
     return _inference(isolateModel);
   }
 

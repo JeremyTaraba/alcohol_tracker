@@ -1,4 +1,8 @@
 Beer
+Cocktail
+Liquor
 Red Wine
-White Wine
 Rose Wine
+Soda
+Water
+White Wine

@@ -151,7 +151,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   }
 
   Future<void> initTensorFlow() async {
-    interpreter = await Interpreter.fromAsset('assets/mobilenet_v1_1.0_224_quant.tflite');
+    interpreter = await Interpreter.fromAsset('assets/model.tflite');
 
     // Get tensor input shape [1, 224, 224, 3]
     inputTensor = interpreter.getInputTensors().first;
@@ -161,7 +161,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   }
 
   Future<void> _loadLabels() async {
-    final labelTxt = await rootBundle.loadString('assets/labels_mobilenet_quant_v1_224.txt');
+    final labelTxt = await rootBundle.loadString('assets/labels.txt');
     labels = labelTxt.split('\n');
   }
 
