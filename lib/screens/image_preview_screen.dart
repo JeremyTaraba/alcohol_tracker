@@ -240,7 +240,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                             totalUpdate["total"] = submittedInfo.values.first + data[DateTime.now().toString().split(" ")[0]]["total"] as int;
                           }
                         }
-                        String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];
+                        String date = DateTime.now().subtract(Duration(days: DateTime.now().weekday)).toString().split(" ")[0];  //gets the sunday for the current week
                         setDrinkLogDatabase(submittedInfo);
                         setDrinkLogDatabase(totalUpdate);
                         user_Info_weeklyLog = await getWeeklyLog(date);
