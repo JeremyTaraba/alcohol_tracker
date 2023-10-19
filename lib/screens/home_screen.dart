@@ -14,7 +14,7 @@ import '../util/objects.dart';
 //TODO: maybe make it so the chart doesnt actually render unless there is data to show since it causes error if it is blank
 //TODO: Make it so user can save login or maybe login as last used user so they don't have to type in username and password
 //TODO: Make it so history is only grabbed per month and only when choosing new date instead of everytime
-
+//TODO:
 late User loggedInUser;
 String username = "";
 
