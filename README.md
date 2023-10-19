@@ -33,7 +33,7 @@ Link to Figma: [Drink Trackr](https://www.figma.com/file/WF63nTwBFEPY1aCSXmdyUa/
 
 Here are screenshots from the finished product
 
-![KoiChatScreens](https://i.imgur.com/vyVYZFY.png)
+![Drink Trackr Images](https://i.imgur.com/GxAo3x3.jpg)
 
 Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/store/apps/details?id=com.jeremytaraba.alcoholtracker.alcohol_tracker&hl=en_US&gl=US)
 
