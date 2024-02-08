@@ -19,16 +19,8 @@ Compile and run files within Android Studio to make an executable APK
 
 link to instructions: https://developer.android.com/studio/run
 
-google play link: https://play.google.com/store/apps/details?id=com.jeremytaraba.alcoholtracker.alcohol_tracker
 
 
-## Mock Up
-
-Here is a mock up of the app I made on figma to guide me through the development process
-Link to Figma: [Drink Trackr](https://www.figma.com/file/WF63nTwBFEPY1aCSXmdyUa/Alcohol-Tracker?type=design&node-id=0%3A1&mode=design&t=vHm5D6nxer3usyXD-1)
-
-
-![Figma Mock Up](https://i.imgur.com/DkoxkN1.png)
 
 
 ## Finished Product
@@ -41,8 +33,9 @@ Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/
 
 
 
-
 # Research Paper: A Mobile Application to Assist in Tracking Alcohol Consumption using Machine Learning and Object Detection
+
+Authors: Jeremy Taraba, Felix Bai
 
 ## Table Of Contents:
 
@@ -95,7 +88,14 @@ One problem we stumbled upon was creating how the app logged each drink. We did 
 
 ### 3.1A – Diagram
 
+Here is a diagram of how the backend works
+
 ![Diagram](https://i.imgur.com/YNyUVHT.png)
+
+Here is a mock up of the app on figma to guide us through the development process
+Link to Figma: [Drink Trackr](https://www.figma.com/file/WF63nTwBFEPY1aCSXmdyUa/Alcohol-Tracker?type=design&node-id=0%3A1&mode=design&t=vHm5D6nxer3usyXD-1)
+
+![Figma Mock Up](https://i.imgur.com/DkoxkN1.png)
 
 ### 3.1B – System Overview
 
