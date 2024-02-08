@@ -144,21 +144,35 @@ For the blood alcohol level, we have created a function which will calculate and
 
 ### 4.1A – Experiment A
 
+The object detection is a potential fault point. The AI could mistakenly identify our beverage, which would skew results. As different alcoholic beverages have different alcohol contents, if the AI was to guess wrong, the overall blood alcohol content would be incorrect. 
+
 ### 4.1B – Design
+
+We will provide the AI with ten photos for each type of alcoholic beverage and see how many it gets incorrect. 10 photos will provide a very general estimation of the AI’s reliability, while being quick and easy to set up. I also have 10 random photos of water, which will act as a control as the AI has not been exposed to photos of water, so it will guess randomly. These images are all just images I have found on the internet.
 
 ### 4.1C – Data and Visualization
 
+
+
 ### 4.1D – Analysis
+
+Based on these results, the AI must be quite reliable. The mean and median guess is 0% incorrectness. The AI was spot on with every single guess, meaning that it is quite reliable. The reason for such a low percentage of incorrect guesses is because the AI has been provided hundreds of reference photos, meaning that it can correctly sort out each photo it receives. However, because of the small initial test size, the AI is not always perfect. 10 photos is quite little, meaning that the AI will still have room for error. Hence, I have decided to incorporate a manual input for the alcoholic beverage to assure that the accurate amount of alcohol is being entered every time. Also, the AI is unable to guess the volume of a drink, so I have added a function to manually input the volume.
 
 
 
 ### 4.2A – Experiment B
 
+Another blind spot is the blood alcohol content calculator. It could incorrectly calculate the user’s blood alcohol level, which would cause an inaccurate measure to the user’s blood alcohol level.
+
 ### 4.2B – Design
+
+I will compare the app’s calculator results to those of the online blood alcohol level calculator on Calculator.net, and calculate the blood alcohol level. I will use 12 ounces of each type of alcoholic beverage with a weight of 150 for both male, and compare the results to the online calculator results. I will find how much the results differ by subtracting the greater value from the smaller. The experiment is conducted like this because I will be able to compare my own data with preexisting, reliable data, from a source other than my own. This will be the best way to test my app’s accuracy.
 
 ### 4.2C – Data and Visualization
 
 ### 4.2D – Analysis
+
+The results we got are just what I had expected, as our source of information for our calculator was closely related to those used in online calculators. Since my calculator used similar data with online calculators, the results were obviously going to be similar. The small offset (between 0-0.002) is mainly because our application rounded to the nearest thousandth, rather than ten-thousandth. This was the biggest impact on our results. I believe rounding was the only reason why our results differed altogether. Using floating numbers we could achieve increased accuracy when compared to these online calculators but at the cost of extra storage and more computational power in the app. The median and mean value both were 0.001, which is somewhat insignificant as it is so miniscule. The results signify that our calculator is quite accurate when compared to these online calculators, and there does not need to be any adjustments to the system. 
 
 
 
@@ -166,9 +180,16 @@ For the blood alcohol level, we have created a function which will calculate and
 
 ### 5.1 – Methodology A
 
+One scholarly source that tackles the problem of AI in image recognition is image recognition in identifying humpback whales [9]. It uses a special algorithm to look for specific points of the image, and then uses another algorithm to look for identifying marks within the specific predetermined points, which helps the AI be extremely precise. The solution is very effective, but quite limited in usage, as it can only be used on whales that have already been recognized. All that it is doing is taking familiar markings on whales and recognizing them. It does not identify unknown whales. My project is able to identify specific types of alcoholic beverage, but minimizes error by allowing the user to manually enter in the beverage.
+
 ### 5.2 – Methodology B
 
+Alcoholic metabolism rates differ per person. Several factors influence the blood alcohol content after drinking, including sex, amount consumed, and meal consumption [15]. This study shows that women tend to have higher peak concentration than men, and that amount consumed played the largest role in determining peak alcohol consumption. Meal consumption also showed that the meal composition played an important role in blood alcohol content. The order went: high protein < high sucrose = high complex carbohydrate < high fat. This source uses breath analyses, which are very accurate and effective. It however ignores the weight of an individual, which also plays an important role. My project will be able to give a rough estimate of the blood alcohol content based on weight, instead of based on the other factors mentioned above.
+
+
 ### 5.3 – Methodology C
+
+This study looks at the efficiency of smartphone apps at reducing alcohol use disorder. They have been found to be quite effective, with the most effective being named the Alcohol - Comprehensive Health Enhancement Support System [16]. This application is based on CHESS, a system that manages various diseases, like HIV, developed by University of Wisconsin-Madison. The app uses GPS systems to alert users when they are near areas with alcoholic beverages, a panic button, and information services. It is very comprehensive, but does not get the actual estimated blood alcohol content for the user, which my program does.
 
 
 
@@ -176,55 +197,64 @@ For the blood alcohol level, we have created a function which will calculate and
 
 ### 6.1 – Limitations and Improvements
 
+The application possesses certain limitations that merit consideration. Primarily, the reliance on object recognition for drink identification introduces the possibility of misclassification, in which the AI may incorrectly identify a drink as something other than its actual type. In specific scenarios, the AI may present the user with multiple options for selection but there are cases where the AI misidentifies the drink completely and the user must retake the picture. A solution to this would be allowing the user to enter their own drink if the AI is incorrect and submitting this as future reference so the AI can learn and predict the correct drink next time. An additional limitation is that the accuracy of the blood alcohol formula is contingent upon alcohol content averages for drinks, yet discrepancies arise when certain drinks go beyond the average. To address this, the AI should be updated to not only discern general drink types but also identify specific brands, enabling it to retrieve accurate alcohol percentage information by looking up the brand of alcohol. Lastly, the current AI model is trained only on five common types of alcohol. While these encompass the most common drink types, the application's support is confined to these five. Enhancing the application's coverage involves expanding the AI's training to include more drinks.
+
 ### 6.2 – Concluding Remarks
 
+Addressing the limitations of the AI would entail implementing strategic measures to enhance its predictive capabilities. First, We could retrain the AI with a more extensive dataset, which would refine its predictive behavior. Additionally, we could introduce multiple AI models to enhance the predictive results for features like brand recognition and the recognition of drink sizes which would make the user experience better and more accurate..
 
 
 ## Section 7 – Summaries
 
 ### 7.1 – Experiment Recap
 
+The experiments run in Section 4 were to test the AI and blood alcohol content calculator’s accuracy. Both experiments were set up similarly and they were performed using the app interface. To test the efficiency of the AI, I placed ten images of different alcoholic beverages and saw if the AI guessed it correctly. The AI did not guess any incorrect, meaning it was quite accurate. This is because I have hundreds of different photos for alcohol, so the AI had enough images to reference. To test the blood alcohol content calculator, I compared results for the same drinks with an online calculator, and looked at how much they differed. The results were also as expected, the difference in results are attributed to rounding. My results, as predicted, were similar, because the way the app-based calculator works is very similar to the way that online blood alcohol content calculators work.
+
 ### 7.2 – Methodology Comparison
 
+The first source uses AI recognition by using unique patterns on each humpback whale to trigger the detection. This works well with whales that are already accounted for, but will not work for unknown whales. The second source looks at the different factors that lead to metabolism being different and is very comprehensive. However, it fails to look at alcohol metabolism based on weight. The last source uses an app to track alcohol use disorder, but does not give the user an estimate of their current blood alcohol level, and is not meant to be used for everyday people, as it includes features that are specialized to treat sufferers of alcohol use disorder, such as a GPS that tells the user when they are near bars. My application takes on a different approach than that of these sources to make the app more generalized and suitable for everyday usage. In a way, it is a simple version of what these sources had to offer.
+
 ### 7.3 - Abstract
+
+Statistics show that excessive alcohol consumption has been a problem and remains a problem in many countries. This paper proposes an application that encompasses a solution which allows users to log and track their alcohol intake over time. It leverages features such as object recognition for drink identification, a history calendar for reflective analysis, and a real time blood alcohol level indicator for health measurements. During experimentation we found that the accuracy of the AI to be exceptional when used on drinks that it has been trained on. Furthermore, the blood alcohol calculator demonstrated a level of accuracy comparable to, if not surpassing, that of online calculators. This heightened accuracy is attributed to its real-time updating capability, ensuring precision in the calculations throughout the user's engagement with the application. The ultimate goal of this initiative is to create a user-friendly, technology-driven solution that empowers individuals to make informed decisions about their alcohol consumption. It promotes responsible drinking behavior and contributes to overall health and well-being.
 
 
 ## Section 8 - References
 
-## [1] Hanson, M. (2023, January 1). National Center for & Drug Abuse Statistics. (2023). Alcohol Abuse Statistics [2023]: National+ State Data. https://drugabusestatistics.org/alcohol-abuse-statistics/
+[1] Hanson, M. (2023, January 1). National Center for & Drug Abuse Statistics. (2023). Alcohol Abuse Statistics [2023]: National+ State Data. https://drugabusestatistics.org/alcohol-abuse-statistics/
 
-## [2] “Data on Excessive Drinking.” Centers for Disease Control and Prevention, Centers for Disease Control and Prevention, 13 Nov. 2023, 
+[2] “Data on Excessive Drinking.” Centers for Disease Control and Prevention, Centers for Disease Control and Prevention, 13 Nov. 2023, 
 www.cdc.gov/alcohol/data-stats.htm. 
 
-## [3] Vankar, Preeti. “Binge Drinking in the United States.” Statista, 24 Jan. 2024, www.statista.com/statistics/354265/current-binge-heavy-alcohol-use-among-persons-in-the-us-by-age/. 
+[3] Vankar, Preeti. “Binge Drinking in the United States.” Statista, 24 Jan. 2024, www.statista.com/statistics/354265/current-binge-heavy-alcohol-use-among-persons-in-the-us-by-age/. 
 
-## [4] el‐Guebaly, N., & El-Guebaly, A. (1981). Alcohol Abuse in Ancient Egypt: The Recorded Evidence. The International Journal of the Addictions, 16(7), 1207–1221. https://doi.org/10.3109/10826088109039174 
+[4] el‐Guebaly, N., & El-Guebaly, A. (1981). Alcohol Abuse in Ancient Egypt: The Recorded Evidence. The International Journal of the Addictions, 16(7), 1207–1221. https://doi.org/10.3109/10826088109039174 
 
-## [5] Manthey, Jakob. “Global Alcohol Exposure between 1990 and 2017 and Forecasts Until ...” The Lancet, 7 May 2019, www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)32744-2/fulltext. 
+[5] Manthey, Jakob. “Global Alcohol Exposure between 1990 and 2017 and Forecasts Until ...” The Lancet, 7 May 2019, www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)32744-2/fulltext. 
 
-## [6] Tang, Y. L., Xiang, X. J., Wang, X. Y., Cubells, J. F., Babor, T. F., & Hao, W. (2013). Alcohol and alcohol-related harm in China: policy changes needed. Bulletin of the World Health Organization, 91, 270-276. https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/bwho/v91n4/09.pdf
+[6] Tang, Y. L., Xiang, X. J., Wang, X. Y., Cubells, J. F., Babor, T. F., & Hao, W. (2013). Alcohol and alcohol-related harm in China: policy changes needed. Bulletin of the World Health Organization, 91, 270-276. https://www.scielosp.org/article/ssm/content/raw/?resource_ssm_path=/media/assets/bwho/v91n4/09.pdf
 
-## [7] Rehm, J., Kehoe, T., Gmel, G., Stinson, F., Grant, B., & Gmel, G. (2010). Statistical modeling of volume of alcohol exposure for epidemiological studies of population health: the US example. Population Health Metrics, 8, 1-12. https://link.springer.com/article/10.1186/1478-7954-8-3
+[7] Rehm, J., Kehoe, T., Gmel, G., Stinson, F., Grant, B., & Gmel, G. (2010). Statistical modeling of volume of alcohol exposure for epidemiological studies of population health: the US example. Population Health Metrics, 8, 1-12. https://link.springer.com/article/10.1186/1478-7954-8-3
 
-## [8] Shield, K. D., Rylett, M., & Rehm, J. (2016). Public health successes and missed opportunities: Trends in alcohol consumption and attributable mortality in the WHO European Region, 1990–2014 (No. WHO/EURO: 2016-4119-43878-61787). World Health Organization. Regional Office for Europe.
+[8] Shield, K. D., Rylett, M., & Rehm, J. (2016). Public health successes and missed opportunities: Trends in alcohol consumption and attributable mortality in the WHO European Region, 1990–2014 (No. WHO/EURO: 2016-4119-43878-61787). World Health Organization. Regional Office for Europe.
 https://www.camh.ca/-/media/files/pdfs---reports-and-books---research/report-to-who-european-region-trends-alcohol-consumption-mortality-camh-oct-2016-pdf.pdf
 
-## [9] Cheeseman, T., Southerland, K., Park, J. et al. Advanced image recognition: a fully automated, high-accuracy photo-identification matching system for humpback whales. Mamm Biol 102, 915–929 (2022). https://doi.org/10.1007/s42991-021-00180-9
+[9] Cheeseman, T., Southerland, K., Park, J. et al. Advanced image recognition: a fully automated, high-accuracy photo-identification matching system for humpback whales. Mamm Biol 102, 915–929 (2022). https://doi.org/10.1007/s42991-021-00180-9
 
-## [10] World Health Organization. (2019). Global status report on alcohol and health 2018. World Health Organization.
+[10] World Health Organization. (2019). Global status report on alcohol and health 2018. World Health Organization.
 https://books.google.com/books?hl=en&lr=&id=qnOyDwAAQBAJ&oi=fnd&pg=PR7&dq=+Global+status+report+on+alcohol+and+health+2018.+World+Health+Organization.&ots=a2ksOHrkan&sig=OaQFz44xMh795d0YmTcFGw6AjxA#v=onepage&q=Global
 
-## [11] Probst, C., Manthey, J., Merey, A., Rylett, M., & Rehm, J. (2018). Unrecorded alcohol use: a global modeling study based on nominal group assessments and survey data. Addiction, 113(7), 1231-1241. https://onlinelibrary.wiley.com/doi/abs/10.1111/add.14173
+[11] Probst, C., Manthey, J., Merey, A., Rylett, M., & Rehm, J. (2018). Unrecorded alcohol use: a global modeling study based on nominal group assessments and survey data. Addiction, 113(7), 1231-1241. https://onlinelibrary.wiley.com/doi/abs/10.1111/add.14173
 
-## [12] Rehm, J., Shield, K. D., Roerecke, M., & Gmel, G. (2016). Modeling the impact of alcohol consumption on cardiovascular disease mortality for comparative risk assessments: an overview. BMC public health, 16, 1-9. https://link.springer.com/article/10.1186/s12889-016-3026-9
+[12] Rehm, J., Shield, K. D., Roerecke, M., & Gmel, G. (2016). Modeling the impact of alcohol consumption on cardiovascular disease mortality for comparative risk assessments: an overview. BMC public health, 16, 1-9. https://link.springer.com/article/10.1186/s12889-016-3026-9
 
-## [13] World Health Organization. (2010). Global strategy to reduce the harmful use of alcohol. World Health Organization. https://www.who.int/publications/i/item/9789241599931
+[13] World Health Organization. (2010). Global strategy to reduce the harmful use of alcohol. World Health Organization. https://www.who.int/publications/i/item/9789241599931
 
-## [14] Winek CL, Esposito FM. Blood alcohol concentrations: factors affecting predictions. Legal Medicine. 1985 :34-61. PMID: 3835425. https://pubmed.ncbi.nlm.nih.gov/3835425/
+[14] Winek CL, Esposito FM. Blood alcohol concentrations: factors affecting predictions. Legal Medicine. 1985 :34-61. PMID: 3835425. https://pubmed.ncbi.nlm.nih.gov/3835425/
 
-## [15] N. A. PIKAAR, M. WEDEL, R. J. J. HERMUS, INFLUENCE OF SEVERAL FACTORS ON BLOOD ALCOHOL CONCENTRATIONS AFTER DRINKING ALCOHOL, Alcohol and Alcoholism, Volume 23, Issue 4, 1988, Pages 289–297, https://doi.org/10.1093/oxfordjournals.alcalc.a044819
+[15] N. A. PIKAAR, M. WEDEL, R. J. J. HERMUS, INFLUENCE OF SEVERAL FACTORS ON BLOOD ALCOHOL CONCENTRATIONS AFTER DRINKING ALCOHOL, Alcohol and Alcoholism, Volume 23, Issue 4, 1988, Pages 289–297, https://doi.org/10.1093/oxfordjournals.alcalc.a044819
 
-## [16] Steven E Meredith, Sheila M Alessi & Nancy M Petry (2015) Smartphone applications to reduce alcohol consumption and help patients with alcohol use disorder: a state-of-the-art review, Advanced Health Care Technologies, 1:, 47-54, DOI: 10.2147/AHCT.S65791
+[16] Steven E Meredith, Sheila M Alessi & Nancy M Petry (2015) Smartphone applications to reduce alcohol consumption and help patients with alcohol use disorder: a state-of-the-art review, Advanced Health Care Technologies, 1:, 47-54, DOI: 10.2147/AHCT.S65791
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4963021/
 
 
