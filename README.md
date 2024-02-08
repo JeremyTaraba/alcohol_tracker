@@ -44,6 +44,27 @@ Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/
 
 # Research Paper: A Mobile Application to Assist in Tracking Alcohol Consumption using Machine Learning and Object Detection
 
+## Table Of Contents:
+
+### Section 1 - Introduction [intro](#section-1)
+
+### Section 2 - Challenges
+
+### Section 3 - Method Analysis
+
+### Section 4 - Experiments
+
+### Section 5 - Methodology Comparison
+
+### Section 6 - Conclusions
+
+### Section 7 - Summaries
+
+### Section 8 - References
+
+
+
+
 ## Section 1 – Introduction
 ### 1.1 – Introduction to Problem
 
@@ -74,7 +95,7 @@ One problem we stumbled upon was creating how the app logged each drink. We did 
 
 ### 3.1A – Diagram
 
-![Diagram](https://imgur.com/a/1km1UlJ)
+![Diagram](https://i.imgur.com/YNyUVHT.png)
 
 ### 3.1B – System Overview
 
@@ -141,7 +162,7 @@ For the blood alcohol level, we have created a function which will calculate and
 
 
 
-## Section 5 - 
+## Section 5 - Methodology Comparison
 
 ### 5.1 – Methodology A
 
