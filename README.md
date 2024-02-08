@@ -48,19 +48,19 @@ Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/
 
 Section 1 - [Introduction](#section-1--introduction)
 
-Section 2 - Challenges
+Section 2 - [Challenges](#section-2--challenges)
 
-Section 3 - Method Analysis
+Section 3 - [Method Analysis](#section-3--method-analysis)
 
-Section 4 - Experiments
+Section 4 - [Experiments](#section-4--experiments)
 
-Section 5 - Methodology Comparison
+Section 5 - [Methodology Comparison](#section-5--methodology-comparison)
 
-Section 6 - Conclusions
+Section 6 - [Conclusions](#section-6--conclusions)
 
-Section 7 - Summaries
+Section 7 - [Summaries](#section-7--summaries)
 
-Section 8 - References
+Section 8 - [References](#section-8--references)
 
 
 
