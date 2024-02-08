@@ -46,7 +46,7 @@ Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/
 
 ## Table Of Contents:
 
-Section 1 - Introduction [intro](#section-1)
+Section 1 - [Introduction](#section-1--introduction)
 
 Section 2 - Challenges
 
