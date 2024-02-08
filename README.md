@@ -13,29 +13,12 @@ This project was made in Android Studio using Flutter. This project compiles int
 - Dart 2.19.3
 - Android 12.0 Google APIs | x86_64
 
-## Installing On Phone
-
-Compile and run files within Android Studio to make an executable APK
-
-link to instructions: https://developer.android.com/studio/run
-
-
-
-
-
-## Finished Product
-
-Here are screenshots from the finished product
-
-![Drink Trackr Images](https://i.imgur.com/GxAo3x3.jpg)
-
-Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/store/apps/details?id=com.jeremytaraba.alcoholtracker.alcohol_tracker&hl=en_US&gl=US)
-
-
 
 # Research Paper: A Mobile Application to Assist in Tracking Alcohol Consumption using Machine Learning and Object Detection
 
 Authors: Jeremy Taraba, Felix Bai
+
+Google Play Store listing: [Drink Trackr on Play Store](https://play.google.com/store/apps/details?id=com.jeremytaraba.alcoholtracker.alcohol_tracker&hl=en_US&gl=US)
 
 ## Table Of Contents:
 
@@ -108,6 +91,8 @@ One central component in the application is the object detection system. Users c
 
 ### 3.2B – UI Screenshot
 
+
+
 ### 3.2C – Code Sample
 
 ### 3.2D – Code Explanation
@@ -119,6 +104,8 @@ In order to identify the type of drink the user has taken a picture of, the app 
 Another component present is the drink history calendar. Users have the capability to access the history screen, where a calendar view is presented, highlighting specific dates on which a drink was recorded. Furthermore, users have the option to click on a particular day to access a comprehensive summary detailing the drinks logged on that specific date.
 
 ### 3.3B – UI Screenshot
+
+![Drink History](https://imgur.com/8J7YYNM)
 
 ### 3.3C – Code Sample
 
@@ -256,5 +243,7 @@ https://books.google.com/books?hl=en&lr=&id=qnOyDwAAQBAJ&oi=fnd&pg=PR7&dq=+Globa
 
 [16] Steven E Meredith, Sheila M Alessi & Nancy M Petry (2015) Smartphone applications to reduce alcohol consumption and help patients with alcohol use disorder: a state-of-the-art review, Advanced Health Care Technologies, 1:, 47-54, DOI: 10.2147/AHCT.S65791
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4963021/
+
+
 
 
