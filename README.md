@@ -54,13 +54,13 @@ Section 3 - [Method Analysis](#section-3--method-analysis)
 
 Section 4 - [Experiments](#section-4--experiments)
 
-Section 5 - [Methodology Comparison](#section-5--methodology-comparison)
+Section 5 - [Methodology Comparison](#section-5---methodology-comparison)
 
 Section 6 - [Conclusions](#section-6--conclusions)
 
 Section 7 - [Summaries](#section-7--summaries)
 
-Section 8 - [References](#section-8--references)
+Section 8 - [References](#section-8---references)
 
 
 
