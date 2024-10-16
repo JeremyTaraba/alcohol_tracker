@@ -89,13 +89,8 @@ The mobile application is developed within the Android Studio framework, leverag
 
 One central component in the application is the object detection system. Users can capture images of their drink and the AI will identify the alcoholic drink.  Users are then prompted to input the quantity consumed or planned. The AI has been trained to identify drinks by using machine learning techniques and runs locally using Tensorflow Lite.
 
-### 3.2B – UI Screenshot
 
-
-
-### 3.2C – Code Sample
-
-### 3.2D – Code Explanation
+### 3.2B – Code Explanation
 
 In order to identify the type of drink the user has taken a picture of, the app uses Tensorflow Lite, a streamlined version of the Tensorflow framework. Tensorflow Lite needs to be fed machine learning data to be set up. The AI also needs the labeled dataset which contain the drinks that the machine learning data is based off of. The last method processes the image taken from the user and calls upon the now set up Tensorflow Lite AI to classify the image. The AI classifies the image based on the machine learning data and it compares the image to the machine learning data. The AI determines the closest match in the dataset, generating a prediction on the classification of the drink. In scenarios where the AI encounters uncertainty or provides multiple predictions, the user is granted the opportunity to manually select the accurate prediction. This user-driven validation mechanism ensures a refined and accurate classification process, enhancing the overall reliability of the application's beverage identification feature.
 
@@ -107,9 +102,7 @@ Another component present is the drink history calendar. Users have the capabili
 
 ![Drink History](https://imgur.com/8J7YYNM.png =x250)
 
-### 3.3C – Code Sample
-
-### 3.3D – Code Explanation
+### 3.3C – Code Explanation
 
 The calendar is implemented by taking advantage of a Flutter package called table_calendar. This package allows the use of a prebuilt calendar that can be modified to fit the needs of our application. The calendar has an event loader which is used to gather a list of events for the current day and does this for all days in an active month. This populates the days with events, which in our case, is the drinks that have been logged on that day with their amounts. These events are gathered from Firebase by looking at each time a user has logged a drink, calculating the total amount of ounces, and adding them to a list for each day. The calendar also allows for users to click on different days to view events from the past.  The selected day variable keeps track of what day is selected and loads the events for that day if there are any.
 
@@ -118,11 +111,8 @@ The calendar is implemented by taking advantage of a Flutter package called tabl
 
 The third component is the blood alcohol level indicator. When a user logs their drink, the alcohol content and the size of the drink is taken into consideration along with the user's gender and weight to produce an accurate blood alcohol level that is personal to the user. This level also updates as time goes by and alcohol is filtered out of the blood.
 
-### 3.4B – UI Screenshot
 
-### 3.4C – Code Sample
-
-### 3.4D – Code Explanation
+### 3.4B – Code Explanation
 
 For the blood alcohol level, we have created a function which will calculate and return the current blood alcohol level. This function first needs to access Firebase to load the drinks that have been logged in the last 24 hours. It loads the drinks, a time stamp for when they were logged, and the amount drunk into a list and calculates the blood alcohol level using the mathematical formula for blood alcohol. This formula uses the user’s gender and weight in order to accurately predict and personalize the alcohol level for each user. The function goes through each drink and is able to determine how much alcohol is in the drink by using an average constant for each specific drink. For example, beers have on average 5% alcohol content and wines have on average 12%. These percentages are used in the formula for calculating the alcohol levels. Lastly, the time difference between now and when the drink was consumed is taken into account when calculating the levels. This is because as time goes on, the levels of alcohol decrease.
 
@@ -137,11 +127,7 @@ The object detection is a potential fault point. The AI could mistakenly identif
 
 We will provide the AI with ten photos for each type of alcoholic beverage and see how many it gets incorrect. 10 photos will provide a very general estimation of the AI’s reliability, while being quick and easy to set up. I also have 10 random photos of water, which will act as a control as the AI has not been exposed to photos of water, so it will guess randomly. These images are all just images I have found on the internet.
 
-### 4.1C – Data and Visualization
-
-
-
-### 4.1D – Analysis
+### 4.1C – Analysis
 
 Based on these results, the AI must be quite reliable. The mean and median guess is 0% incorrectness. The AI was spot on with every single guess, meaning that it is quite reliable. The reason for such a low percentage of incorrect guesses is because the AI has been provided hundreds of reference photos, meaning that it can correctly sort out each photo it receives. However, because of the small initial test size, the AI is not always perfect. 10 photos is quite little, meaning that the AI will still have room for error. Hence, I have decided to incorporate a manual input for the alcoholic beverage to assure that the accurate amount of alcohol is being entered every time. Also, the AI is unable to guess the volume of a drink, so I have added a function to manually input the volume.
 
@@ -155,9 +141,8 @@ Another blind spot is the blood alcohol content calculator. It could incorrectly
 
 I will compare the app’s calculator results to those of the online blood alcohol level calculator on Calculator.net, and calculate the blood alcohol level. I will use 12 ounces of each type of alcoholic beverage with a weight of 150 for both male, and compare the results to the online calculator results. I will find how much the results differ by subtracting the greater value from the smaller. The experiment is conducted like this because I will be able to compare my own data with preexisting, reliable data, from a source other than my own. This will be the best way to test my app’s accuracy.
 
-### 4.2C – Data and Visualization
 
-### 4.2D – Analysis
+### 4.2C – Analysis
 
 The results we got are just what I had expected, as our source of information for our calculator was closely related to those used in online calculators. Since my calculator used similar data with online calculators, the results were obviously going to be similar. The small offset (between 0-0.002) is mainly because our application rounded to the nearest thousandth, rather than ten-thousandth. This was the biggest impact on our results. I believe rounding was the only reason why our results differed altogether. Using floating numbers we could achieve increased accuracy when compared to these online calculators but at the cost of extra storage and more computational power in the app. The median and mean value both were 0.001, which is somewhat insignificant as it is so miniscule. The results signify that our calculator is quite accurate when compared to these online calculators, and there does not need to be any adjustments to the system. 
 
