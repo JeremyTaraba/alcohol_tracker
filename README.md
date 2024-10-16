@@ -100,7 +100,7 @@ Another component present is the drink history calendar. Users have the capabili
 
 ### 3.3B – UI Screenshot
 
-![Drink History](https://imgur.com/8J7YYNM.png =x250)
+![Drink History](https://imgur.com/8J7YYNM.png=x250)
 
 ### 3.3C – Code Explanation
 
