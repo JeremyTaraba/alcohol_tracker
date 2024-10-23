@@ -13,7 +13,7 @@ This project was made in Android Studio using Flutter. This project compiles int
 - Dart 2.19.3
 - Android 12.0 Google APIs | x86_64
 
-
+## 
 Published Research Paper: https://aircconline.com/csit/papers/vol14/csit140509.pdf
 
 # Research Paper: A Mobile Application to Assist in Tracking Alcohol Consumption using Machine Learning and Object Detection
